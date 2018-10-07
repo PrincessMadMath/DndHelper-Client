@@ -28,7 +28,10 @@ class Monster extends React.Component {
 
         return (
             <MonsterComponent>
-                <Link to={`monsters/${monster.name}`} className="monster-name-link">
+                <Link
+                    to={`/monsters/${monster.name}?$list=Aarakocra,Aarakocra`}
+                    className="monster-name-link"
+                >
                     <h1 className="monster-name">{monster.name}</h1>
                 </Link>
                 <FightInfo monster={monster} />

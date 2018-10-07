@@ -11,19 +11,13 @@ import SpellDatabase from "./SpellDatabase";
 import MonsterSingle from "./MonsterSingle";
 import Spell from "./Spell";
 import NotFound from "./NotFound";
+import Encounter from "./Encounter";
 
 class App extends Component {
     state = {
-        monsters: [],
-        spells: [],
+        monstersDB: monsters,
+        spellsDB: spells,
     };
-
-    componentDidMount() {
-        this.setState({
-            monsters: monsters,
-            spells: spells,
-        });
-    }
 
     render() {
         return (
@@ -36,8 +30,8 @@ class App extends Component {
                         path="/monsters"
                         render={props => (
                             <MonsterDatabase
-                                monsters={this.state.monsters}
-                                spells={this.state.spells}
+                                monstersDB={this.state.monstersDB}
+                                spellsDB={this.state.spellsDB}
                                 {...props}
                             />
                         )}
@@ -46,8 +40,18 @@ class App extends Component {
                         path="/monsters/:monsterId"
                         render={props => (
                             <MonsterSingle
-                                monsters={this.state.monsters}
-                                spells={this.state.spells}
+                                monstersDB={this.state.monstersDB}
+                                spellsDB={this.state.spellsDB}
+                                {...props}
+                            />
+                        )}
+                    />
+                    <Route
+                        path="/encounter"
+                        render={props => (
+                            <Encounter
+                                monstersDB={this.state.monstersDB}
+                                spellsDB={this.state.spellsDB}
                                 {...props}
                             />
                         )}
@@ -55,11 +59,9 @@ class App extends Component {
                     <Route
                         exact
                         path="/spells"
-                        render={props => <SpellDatabase spells={this.state.spells} {...props} />}
-                    />
-                    <Route
-                        path="/spells/:spellId"
-                        render={props => <Spell spells={this.state.spells} {...props} />}
+                        render={props => (
+                            <SpellDatabase spellsDB={this.state.spellsDB} {...props} />
+                        )}
                     />
                     <Route component={NotFound} />
                 </Switch>

@@ -1,15 +1,15 @@
 import React from "react";
 import Spell from "./Spell";
-import LazyLoad, { forceCheck } from "react-lazyload";
+import LazyLoad from "react-lazyload";
 
 class SpellDatabase extends React.Component {
     render() {
-        const { spells } = this.props;
+        const { spellsDB } = this.props;
 
         return (
             <div>
                 <h3>Spell Database</h3>
-                {spells.map(function(spell, i) {
+                {spellsDB.map(function(spell, i) {
                     return (
                         <LazyLoad key={spell.name} height={1000} offset={500}>
                             <Spell key={i} spell={spell} />
