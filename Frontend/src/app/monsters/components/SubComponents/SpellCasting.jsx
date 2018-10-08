@@ -32,6 +32,7 @@ const SpellDetail = ({ spellsByLevel }) => {
       </strong>
       {spellsByLevel.spells.map((x, index) =>
         <SpellItem
+          key={ x }
           spellName={x}
           lastOne={index === spellsByLevel.spells.length - 1}
         />
