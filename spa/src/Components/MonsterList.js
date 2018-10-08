@@ -3,6 +3,14 @@ import PropTypes from "prop-types";
 import LazyLoad, { forceCheck } from "react-lazyload";
 import Monster from "./Monster";
 
+import styled from "styled-components";
+
+const AddButton = styled.div`
+    position: absolute;
+    right: 20px;
+    top: 10px;
+`;
+
 export default class MonsterList extends Component {
     static propTypes = {
         visibleMonsters: PropTypes.array.isRequired,
@@ -18,14 +26,18 @@ export default class MonsterList extends Component {
     }
 
     render() {
-        const { visibleMonsters, spellsDB } = this.props;
+        const { visibleMonsters, spellsDB, onAddMonster } = this.props;
 
         return (
             <div>
                 {visibleMonsters.map(function(monster) {
                     return (
                         <LazyLoad key={monster.name} height={1000}>
-                            <Monster monster={monster} spells={spellsDB} />
+                            <Monster monster={monster} spells={spellsDB}>
+                                <AddButton>
+                                    <button onClick={() => onAddMonster(monster.name)}>+</button>
+                                </AddButton>
+                            </Monster>
                         </LazyLoad>
                     );
                 })}

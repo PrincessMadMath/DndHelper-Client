@@ -28,6 +28,6 @@ export default class SearchBox extends React.Component {
 }
 
 SearchBox.propType = {
-    items: PropTypes.arrayOf(PropTypes.string.required),
-    fieldName: PropTypes.string.required,
+    items: PropTypes.arrayOf(PropTypes.string.isRequired),
+    fieldName: PropTypes.string.isRequired,
 };

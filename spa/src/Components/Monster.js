@@ -11,6 +11,7 @@ import SpellCasting from "./SubComponents/SpellCasting";
 import styled from "styled-components";
 
 const MonsterComponent = styled.div`
+    position: relative;
     border-style: solid;
     border-color: #8e2f1a;
     border-width: 6px 3px;
@@ -44,6 +45,7 @@ class Monster extends React.Component {
                     title="Legendary Actions"
                     specialAbilities={monster.legendaryActions}
                 />
+                {this.props.children}
             </MonsterComponent>
         );
     }

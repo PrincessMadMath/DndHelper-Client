@@ -5,12 +5,25 @@ import MonsterFilter from "./MonsterFilter";
 class MonsterDatabase extends React.Component {
     state = {
         filter: null,
+        encounterMonster: [],
     };
 
     handleFilterUpdate = filter => {
-        console.log({ filter });
-
         this.setState({ filter: filter });
+    };
+
+    handleAddMonster = monsterName => {
+        console.log(monsterName);
+
+        const newEncounterMonster = this.state.encounterMonster;
+        newEncounterMonster.push(monsterName);
+
+        this.setState({ encounterMonster: newEncounterMonster });
+    };
+
+    handleGoToEncounter = () => {
+        console.log(this.state.encounterMonster);
+        this.props.history.push(`/encounter/?list=${this.state.encounterMonster.join()}`);
     };
 
     selectVisibleMonster = () => {
@@ -37,8 +50,13 @@ class MonsterDatabase extends React.Component {
         return (
             <div>
                 <h3>Monster Database</h3>
+                <button onClick={this.handleGoToEncounter}>Go to encounter</button>
                 <MonsterFilter onFilterUpdate={this.handleFilterUpdate} />
-                <MonsterList visibleMonsters={visibleMonsters} spellsDB={spellsDB} />
+                <MonsterList
+                    visibleMonsters={visibleMonsters}
+                    spellsDB={spellsDB}
+                    onAddMonster={this.handleAddMonster}
+                />
             </div>
         );
     }
