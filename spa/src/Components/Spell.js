@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import SpellComponent from "./SubComponents/SpellComponents";
+import ManualComponent from "./StyledComponent/ManualComponent";
 
 const showdown = require("showdown");
 const converter = new showdown.Converter();
@@ -16,7 +17,7 @@ function createMarkup(text) {
 
 const Spell = ({ spell }) => {
     return (
-        <div className="information-box">
+        <ManualComponent>
             <div>
                 <div>
                     <div>
@@ -56,7 +57,7 @@ const Spell = ({ spell }) => {
             <p>
                 <b>Class:</b> {spell.class.join(", ")}
             </p>
-        </div>
+        </ManualComponent>
     );
 };
 

@@ -7,28 +7,14 @@ import Actions from "./SubComponents/Actions";
 import FightInfo from "./SubComponents/FightInfo";
 import OtherInfo from "./SubComponents/OtherInfo";
 import SpellCasting from "./SubComponents/SpellCasting";
-
-import styled from "styled-components";
-
-const MonsterComponent = styled.div`
-    position: relative;
-    border-style: solid;
-    border-color: #8e2f1a;
-    border-width: 6px 3px;
-    padding: 1em;
-    margin: 1em;
-    max-width: 45em;
-    background-color: #eee5ce;
-    background-image: url("./img/background.jpg");
-    box-shadow: 10px 10px 5px #888888;
-`;
+import ManualComponent from "./StyledComponent/ManualComponent";
 
 class Monster extends React.Component {
     render() {
         const { monster, spells } = this.props;
 
         return (
-            <MonsterComponent>
+            <ManualComponent>
                 <Link
                     to={`/monsters/${monster.name}?$list=Aarakocra,Aarakocra`}
                     className="monster-name-link"
@@ -46,7 +32,7 @@ class Monster extends React.Component {
                     specialAbilities={monster.legendaryActions}
                 />
                 {this.props.children}
-            </MonsterComponent>
+            </ManualComponent>
         );
     }
 }
