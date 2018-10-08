@@ -19,7 +19,8 @@ const SpellCasting = ({ spellsDetail }) => {
       <p>
         {spellsDetail.desc}
       </p>
-      {spellsDetail.details.map(x => <SpellDetail spellsByLevel={x} />)}
+      {spellsDetail.details.map(x => <SpellDetail key={x.details}
+                                                  spellsByLevel={x}/>)}
     </div>
   );
 };
@@ -32,6 +33,7 @@ const SpellDetail = ({ spellsByLevel }) => {
       </strong>
       {spellsByLevel.spells.map((x, index) =>
         <SpellItem
+          key={ x }
           spellName={x}
           lastOne={index === spellsByLevel.spells.length - 1}
         />
