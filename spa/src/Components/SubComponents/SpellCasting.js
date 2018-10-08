@@ -15,7 +15,7 @@ const SpellCasting = ({ monsterSpells, spellsDatabase }) => {
             <hr />
             <p>{monsterSpells.desc}</p>
             {monsterSpells.details.map(x => (
-                <SpellDetail spellsByLevel={x} spellsDatabase={spellsDatabase} />
+                <SpellDetail key={x.details} spellsByLevel={x} spellsDatabase={spellsDatabase} />
             ))}
         </div>
     );
@@ -27,6 +27,7 @@ const SpellDetail = ({ spellsByLevel, spellsDatabase }) => {
             <strong>{spellsByLevel.details}: </strong>
             {spellsByLevel.spells.map((x, index) => (
                 <SpellItem
+                    key={x}
                     spellName={x}
                     isLastOne={index === spellsByLevel.spells.length - 1}
                     spellsDatabase={spellsDatabase}
