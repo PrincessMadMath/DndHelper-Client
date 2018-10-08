@@ -18,7 +18,7 @@ const MonsterComponent = styled.div`
     margin: 1em;
     max-width: 45em;
     background-color: #eee5ce;
-    background-image: url("background.jpg");
+    background-image: url("./img/background.jpg");
     box-shadow: 10px 10px 5px #888888;
 `;
 
