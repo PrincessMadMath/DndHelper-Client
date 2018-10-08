@@ -8,7 +8,7 @@ import "./style/Monster.css";
 class MonstersShowcase extends Component {
   state = {
     textForm: "",
-    selectedMonster: null
+    selectedMonster: null,
   };
 
   renderTextEntry = () => {
@@ -36,7 +36,7 @@ class MonstersShowcase extends Component {
     const monsterName = text.split(",");
     const monstersInfo = [];
 
-    monsterName.map(name => {
+    monsterName.foreach(name => {
       const monsterInfo = database.find(
         x => x.name.toLowerCase().trim() === name.toLowerCase().trim()
       );

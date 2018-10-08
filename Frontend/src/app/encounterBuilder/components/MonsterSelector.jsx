@@ -32,7 +32,7 @@ class MonsterSelector extends Component {
     const onCountChange = e => {
       this.props.onCountUpdate(
         currentMonster.monsterId,
-        parseInt(e.target.value)
+        parseInt(e.target.value, 10)
       )
     }
 
@@ -69,14 +69,12 @@ class MonsterSelector extends Component {
 }
 
 function transformMonster (monsters) {
-  const selectableMonsters = monsters.map(monster => {
+  return monsters.map(monster => {
     return {
       value: monster.name,
       label: monster.name
     }
   })
-
-  return selectableMonsters
 }
 
 const mapStateToProps = state => {
