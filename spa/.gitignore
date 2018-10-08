@@ -5,6 +5,7 @@
 
 # Web Storm
 /.idea
+*.iml
 
 # testing
 /coverage
