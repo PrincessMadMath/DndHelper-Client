@@ -1,21 +1,44 @@
 import React from "react";
-import LazyLoad from "react-lazyload";
-import Monster from "./Monster";
+import MonsterList from "./MonsterList";
+import MonsterFilter from "./MonsterFilter";
 
 class MonsterDatabase extends React.Component {
+    state = {
+        filter: null,
+    };
+
+    handleFilterUpdate = filter => {
+        console.log({ filter });
+
+        this.setState({ filter: filter });
+    };
+
+    selectVisibleMonster = () => {
+        const { monstersDB } = this.props;
+        const { filter } = this.state;
+
+        if (!!!filter) {
+            return monstersDB;
+        }
+
+        const visibleMonsters = monstersDB.filter(monster => {
+            const nameFilter = filter.name;
+            return monster.name.toLowerCase().includes(nameFilter.toLowerCase());
+        });
+
+        return visibleMonsters;
+    };
+
     render() {
-        const { monstersDB, spellsDB } = this.props;
+        const { spellsDB } = this.props;
+
+        const visibleMonsters = this.selectVisibleMonster();
 
         return (
             <div>
                 <h3>Monster Database</h3>
-                {monstersDB.map(function(monster) {
-                    return (
-                        <LazyLoad key={monster.name} height={1000} offset={500}>
-                            <Monster monster={monster} spells={spellsDB} />
-                        </LazyLoad>
-                    );
-                })}
+                <MonsterFilter onFilterUpdate={this.handleFilterUpdate} />
+                <MonsterList visibleMonsters={visibleMonsters} spellsDB={spellsDB} />
             </div>
         );
     }
