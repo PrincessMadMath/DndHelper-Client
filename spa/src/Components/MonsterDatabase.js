@@ -4,6 +4,7 @@ import SearchBox from "./SubComponents/SearchBox";
 import MultiSelect from "./SubComponents/MultiSelect";
 import MaskMap from "../utils/MaskMap";
 import { forceCheck } from "react-lazyload";
+import CrComparator from "../utils/CrComparator";
 
 class MonsterDatabase extends React.Component {
     constructor(props) {
@@ -51,6 +52,7 @@ class MonsterDatabase extends React.Component {
                     items={monstersDB.map(s => s.name)}
                 />
                 <MultiSelect items={monstersDB.map(m => m.challengeRating)}
+                             compareFunc={CrComparator}
                              callback={mask => this.setMask("cr_mask", mask)} />
                 <MonsterList
                     visibleMonsters={filteredMonsters}
