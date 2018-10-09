@@ -36,7 +36,7 @@ export default class MultiSelect extends React.Component {
     render() {
         return (
             <select multiple onChange={this.handleChange}>
-                {[...this.state.options].map(option => (
+                {[...this.state.options].sort().map(option => (
                     <option key={option} value={option}>
                         {option}
                     </option>

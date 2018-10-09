@@ -15,6 +15,7 @@ class SpellDatabase extends React.Component {
                 name_mask: new Array(props.spellsDB.length).fill(true),
                 school_mask: new Array(props.spellsDB.length).fill(true),
                 class_mask: new Array(props.spellsDB.length).fill(true),
+                range_mask: new Array(props.spellsDB.length).fill(true),
             },
         };
         this.setMask = this.setMask.bind(this);
@@ -33,6 +34,7 @@ class SpellDatabase extends React.Component {
 
     render() {
         const { spellsDB } = this.props;
+        const filteredSpells = spellsDB.filter(this.filterSpell);
 
         return (
             <div>
@@ -49,8 +51,12 @@ class SpellDatabase extends React.Component {
                     items={spellsDB.map(s => s.class)}
                     callback={mask => this.setMask(mask, "class_mask")}
                 />
-                <h3>Spell Database</h3>
-                {spellsDB.filter(this.filterSpell).map((spell, i) => (
+                <MultiSelect
+                    items={spellsDB.map(s => s.range)}
+                    callback={mask => this.setMask(mask, "range_mask")}
+                />
+                <h3>Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)</h3>
+                {filteredSpells.map((spell, i) => (
                     <LazyLoad key={spell.name} height={1000} offset={500} once>
                         <Spell key={i} spell={spell} />
                     </LazyLoad>
