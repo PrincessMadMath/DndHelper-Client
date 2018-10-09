@@ -97,6 +97,7 @@ body {
 /*To make the title and components on the same line*/
 .spell-header {
   display: flex;
+  cursor: pointer;
 }
 .spell-title {
   flex: 1;
@@ -197,15 +198,51 @@ body {
 
 /* Recreate the style of the box in the monster manual */
 .information-box {
+  position: relative;
   border-style: solid;
   border-color: #8e2f1a;
-  border-width: 6px 3px;
+  border-width: 3px 3px;
   padding: 1em;
   margin: 1em;
+  transition-duration: 0.25s;
   max-width: 45em;
   background-color: #EEE5CE;
-  background-image: url("background.jpg");
-  box-shadow: 10px 10px 5px #888888;
+  background-image: url(/static/media/background.8c8b6c09.jpg);
+  box-shadow: 6px 5px 9px -1px rgba(128,131,133,0.4);
+}
+
+.information-box:before{
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(to bottom right, firebrick 0%, darkolivegreen 100%);
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.information-box:after{
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(45deg, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 74%,rgba(255,255,255,0.94) 75%,rgba(255,255,255,0.94) 77%,rgba(255,255,255,0.3) 78%,rgba(255,255,255,1) 81%,rgba(255,255,255,0) 97%,rgba(255,255,255,0) 100%);
+  background-size: 500% 100%;
+  background-position: 0% 0%;
+  opacity: .8;
+  transition-duration: 0s;
+  pointer-events: none;
+}
+
+.information-box:hover:after {
+    /* background-image: linear-gradient(to bottom right,#552f4b,#dc4225); */
+    background-position: -120% 0%;
+    transition-duration: 0.8s;
+    /* transition-duration: 0s; */
 }
 
 /* Make header and bold text in dark red (like in the manual) */
