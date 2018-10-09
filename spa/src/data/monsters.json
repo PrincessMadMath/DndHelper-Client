@@ -4582,7 +4582,7 @@
       "languages": ""
     },
     {
-      "challengeRating": "00",
+        "challengeRating": "N/A",
       "name": "Avatar of Death",
       "size": "Medium",
       "type": "Undead",
@@ -14788,7 +14788,7 @@
       "languages": "Common, Dwarvish"
     },
     {
-      "challengeRating": "l",
+        "challengeRating": "1",
       "name": "Dread Warrior",
       "size": "Medium",
       "type": "Undead",
