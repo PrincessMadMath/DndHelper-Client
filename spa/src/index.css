@@ -78,14 +78,14 @@ body {
 
 .monster-abilities-container {
   display: flex;
-  flex-direction: horizontal;
-  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-right: 6px;
 }
 
 .monter-ability {
   text-align: center;
   min-width: 50px;
-  margin: 5px 15px;
+  margin: 5px 0;
 }
 
 .monter-other-info-container {
@@ -95,8 +95,30 @@ body {
 /* ************ Spells ************ */
 
 /*To make the title and components on the same line*/
+.spell-header {
+  display: flex;
+}
 .spell-title {
-  display: inline;
+  flex: 1;
+}
+
+.spell-title h1 {
+  margin: 0;
+}
+
+/* Empiracally the tallest spell is 717px */
+/*[...document.getElementsByClassName("spell-content")].map(d => d.offsetHeight).reduce((a,b) => a > b ? a:b)*/
+.spell-opened {
+  max-height: 560px;
+}
+
+.spell-collapsed {
+  max-height: 0;
+}
+
+.spell-content {
+  transition: max-height .25s ease-in-out;
+  overflow: hidden;
 }
 
 /*Make the little description under title in italic*/
@@ -113,10 +135,10 @@ body {
 
 @media (max-width: 768px) {
   .component-list {
-    padding-left: 0px;
+    padding-left: 0;
     padding-bottom: 10px;
   }
-} 
+}
 
 .component-item {
   /* Center logo inside */

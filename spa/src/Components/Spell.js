@@ -14,13 +14,46 @@ function createMarkup(text) {
     };
 }
 
-const Spell = ({ spell }) => {
-    return (
-        <div className="information-box">
-            <div>
-                <div>
-                    <div>
-                        <h1 className="spell-title">{spell.name}</h1>
+export default class Spell extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            opened: props.opened
+        };
+
+    }
+
+    static propTypes = {
+        spell: PropTypes.shape({
+            level: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired,
+            castingTime: PropTypes.string.isRequired,
+            range: PropTypes.string.isRequired,
+            components: PropTypes.object.isRequired,
+            duration: PropTypes.string.isRequired,
+            description: PropTypes.string.isRequired,
+            higherLevel: PropTypes.string,
+            class: PropTypes.arrayOf(PropTypes.string).isRequired,
+        }).isRequired,
+        opened: PropTypes.bool
+    };
+
+    spellClick = () => {
+        this.setState((state) => ({ opened: !state.opened }));
+    };
+
+    render() {
+        const { spell } = this.props;
+        const clazz = this.state.opened ? "spell-opened" : "spell-collapsed";
+
+        return (
+            <div className="information-box">
+                <div className="spell-header" onClick={this.spellClick}>
+                    <div className="spell-title">
+                        <h1>{spell.name}</h1>
                         <div className="spell-type">
                             <span>{spell.type}</span>
                             <span>{spell.canBeRitual && " (ritual)"} </span>
@@ -32,47 +65,32 @@ const Spell = ({ spell }) => {
                         </div>
                     </div>
                 </div>
+                <div className={"spell-content " + clazz}>
+                    <div className="spell-quick-info">
+                        <p>
+                            <b>Range: </b>
+                            {spell.range}
+                            <br />
+                            <b>Duration: </b>
+                            {spell.duration}
+                            <br />
+                            <b>Casting time: </b>
+                            {spell.castingTime}
+                            <br />
+                        </p>
+                    </div>
+                    <p dangerouslySetInnerHTML={createMarkup(spell.description)} />
+                    {spell.higherLevel && (
+                        <p>
+                            <b>At higher level. </b>
+                            {spell.higherLevel}
+                        </p>
+                    )}
+                    <p>
+                        <b>Class:</b> {spell.class.join(", ")}
+                    </p>
+                </div>
             </div>
-            <div className="spell-quick-info">
-                <p>
-                    <b>Range: </b>
-                    {spell.range}
-                    <br />
-                    <b>Duration: </b>
-                    {spell.duration}
-                    <br />
-                    <b>Casting time: </b>
-                    {spell.castingTime}
-                    <br />
-                </p>
-            </div>
-            <p dangerouslySetInnerHTML={createMarkup(spell.description)} />
-            {spell.higherLevel && (
-                <p>
-                    <b>At higher level. </b>
-                    {spell.higherLevel}
-                </p>
-            )}
-            <p>
-                <b>Class:</b> {spell.class.join(", ")}
-            </p>
-        </div>
-    );
-};
-
-Spell.propType = {
-    spell: PropTypes.shape({
-        level: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        castingTime: PropTypes.string.isRequired,
-        range: PropTypes.string.isRequired,
-        components: PropTypes.string.isRequired,
-        duration: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        higherLevel: PropTypes.string.isRequired,
-        class: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired,
-};
-
-export default Spell;
+        );
+    }
+}

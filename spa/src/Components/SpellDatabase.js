@@ -50,7 +50,7 @@ export default class SpellDatabase extends React.Component {
                     Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)
                 </h3>
                 {filteredSpells.map((spell, i) => (
-                    <LazyLoad key={spell.name} height={1000} offset={500} once>
+                    <LazyLoad key={spell.name} height={113} offset={500} once>
                         <Spell key={i} spell={spell} />
                     </LazyLoad>
                 ))}
