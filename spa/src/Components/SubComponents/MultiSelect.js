@@ -8,11 +8,9 @@ export default class MultiSelect extends React.Component {
         this.state = {
             options: new Set(this.props.items.flat().map(v => v.trim().toLowerCase())),
         };
-
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
+    handleChange = event => {
         const selectedOptions = [...event.target.options].filter(o => o.selected).map(o => o.value);
 
         if (selectedOptions.length === 0) {
@@ -31,7 +29,7 @@ export default class MultiSelect extends React.Component {
                 )
             );
         }
-    }
+    };
 
     render() {
         return (

@@ -1,12 +1,11 @@
 import React from "react";
 import Spell from "./Spell";
-import LazyLoad from "react-lazyload";
-import { forceCheck } from "react-lazyload";
+import LazyLoad, { forceCheck } from "react-lazyload";
 
 import SearchBox from "./SubComponents/SearchBox";
 import MultiSelect from "./SubComponents/MultiSelect";
 
-class SpellDatabase extends React.Component {
+export default class SpellDatabase extends React.Component {
     constructor(props) {
         super(props);
 
@@ -18,19 +17,17 @@ class SpellDatabase extends React.Component {
                 range_mask: new Array(props.spellsDB.length).fill(true),
             },
         };
-        this.setMask = this.setMask.bind(this);
-        this.filterSpell = this.filterSpell.bind(this);
     }
 
-    setMask(mask, mask_name) {
+    setMask = (mask, mask_name) => {
         // we have to force a lazy-load check after filtering children since spells
         // can enter the viewport without scroll or resize
         this.setState({ masks: { ...this.state.masks, [mask_name]: mask } }, forceCheck);
-    }
+    };
 
-    filterSpell(spell, index) {
+    filterSpell = (spell, index) => {
         return Object.values(this.state.masks).every(mask => mask[index]);
-    }
+    };
 
     render() {
         const { spellsDB } = this.props;
@@ -55,7 +52,9 @@ class SpellDatabase extends React.Component {
                     items={spellsDB.map(s => s.range)}
                     callback={mask => this.setMask(mask, "range_mask")}
                 />
-                <h3>Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)</h3>
+                <h3>
+                    Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)
+                </h3>
                 {filteredSpells.map((spell, i) => (
                     <LazyLoad key={spell.name} height={1000} offset={500} once>
                         <Spell key={i} spell={spell} />
@@ -65,5 +64,3 @@ class SpellDatabase extends React.Component {
         );
     }
 }
-
-export default SpellDatabase;
