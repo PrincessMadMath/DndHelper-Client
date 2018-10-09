@@ -4,53 +4,47 @@ import LazyLoad, { forceCheck } from "react-lazyload";
 
 import SearchBox from "./SubComponents/SearchBox";
 import MultiSelect from "./SubComponents/MultiSelect";
+import MaskMap from "../utils/MaskMap";
 
 export default class SpellDatabase extends React.Component {
     constructor(props) {
         super(props);
 
+        this.masks = new MaskMap(props.spellsDB.length);
         this.state = {
-            masks: {
-                name_mask: new Array(props.spellsDB.length).fill(true),
-                school_mask: new Array(props.spellsDB.length).fill(true),
-                class_mask: new Array(props.spellsDB.length).fill(true),
-                range_mask: new Array(props.spellsDB.length).fill(true),
-            },
+            filteredSpells: props.spellsDB,
         };
     }
 
-    setMask = (mask, mask_name) => {
+    setMask = (mask_name, mask) => {
         // we have to force a lazy-load check after filtering children since spells
         // can enter the viewport without scroll or resize
-        this.setState({ masks: { ...this.state.masks, [mask_name]: mask } }, forceCheck);
-    };
-
-    filterSpell = (spell, index) => {
-        return Object.values(this.state.masks).every(mask => mask[index]);
+        this.masks.setMask(mask_name, mask);
+        this.setState((state, props) => ({ filteredSpells: this.masks.filter(props.spellsDB) }), forceCheck);
     };
 
     render() {
         const { spellsDB } = this.props;
-        const filteredSpells = spellsDB.filter(this.filterSpell);
+        const { filteredSpells } = this.state;
 
         return (
             <div>
                 <SearchBox
                     fieldName={"name"}
-                    callback={mask => this.setMask(mask, "name_mask")}
+                    callback={mask => this.setMask("name_mask", mask)}
                     items={spellsDB.map(s => s.name)}
                 />
                 <MultiSelect
                     items={spellsDB.map(s => s.school)}
-                    callback={mask => this.setMask(mask, "school_mask")}
+                    callback={mask => this.setMask("school_mask", mask)}
                 />
                 <MultiSelect
                     items={spellsDB.map(s => s.class)}
-                    callback={mask => this.setMask(mask, "class_mask")}
+                    callback={mask => this.setMask("class_mask", mask)}
                 />
                 <MultiSelect
                     items={spellsDB.map(s => s.range)}
-                    callback={mask => this.setMask(mask, "range_mask")}
+                    callback={mask => this.setMask("range_mask", mask)}
                 />
                 <h3>
                     Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)
