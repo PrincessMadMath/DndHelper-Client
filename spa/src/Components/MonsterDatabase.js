@@ -1,15 +1,27 @@
 import React from "react";
 import MonsterList from "./MonsterList";
-import MonsterFilter from "./MonsterFilter";
+import SearchBox from "./SubComponents/SearchBox";
+import MultiSelect from "./SubComponents/MultiSelect";
+import MaskMap from "../utils/MaskMap";
+import { forceCheck } from "react-lazyload";
+import CrComparator from "../utils/CrComparator";
 
 class MonsterDatabase extends React.Component {
-    state = {
-        filter: null,
-        encounterMonster: [],
-    };
+    constructor(props) {
+        super(props);
 
-    handleFilterUpdate = filter => {
-        this.setState({ filter: filter });
+        this.masks = new MaskMap(props.monstersDB.length);
+        this.state = {
+            filteredMonsters: props.monstersDB,
+            encounterMonster: [],
+        };
+    }
+
+    setMask = (mask_name, mask) => {
+        // we have to force a lazy-load check after filtering children since spells
+        // can enter the viewport without scroll or resize
+        this.masks.setMask(mask_name, mask);
+        this.setState((state, props) => ({ filteredMonsters: this.masks.filter(props.monstersDB) }), forceCheck);
     };
 
     handleAddMonster = monsterName => {
@@ -26,34 +38,24 @@ class MonsterDatabase extends React.Component {
         this.props.history.push(`/encounter/?list=${this.state.encounterMonster.join()}`);
     };
 
-    selectVisibleMonster = () => {
-        const { monstersDB } = this.props;
-        const { filter } = this.state;
-
-        if (!!!filter) {
-            return monstersDB;
-        }
-
-        const visibleMonsters = monstersDB.filter(monster => {
-            const nameFilter = filter.name;
-            return monster.name.toLowerCase().includes(nameFilter.toLowerCase());
-        });
-
-        return visibleMonsters;
-    };
-
     render() {
-        const { spellsDB } = this.props;
-
-        const visibleMonsters = this.selectVisibleMonster();
+        const { spellsDB, monstersDB } = this.props;
+        const { filteredMonsters } = this.state;
 
         return (
             <div>
                 <h3>Monster Database</h3>
                 <button onClick={this.handleGoToEncounter}>Go to encounter</button>
-                <MonsterFilter onFilterUpdate={this.handleFilterUpdate} />
+                <SearchBox
+                    fieldName={"name"}
+                    callback={mask => this.setMask("name_mask", mask)}
+                    items={monstersDB.map(s => s.name)}
+                />
+                <MultiSelect items={monstersDB.map(m => m.challengeRating)}
+                             compareFunc={CrComparator}
+                             callback={mask => this.setMask("cr_mask", mask)} />
                 <MonsterList
-                    visibleMonsters={visibleMonsters}
+                    visibleMonsters={filteredMonsters}
                     spellsDB={spellsDB}
                     onAddMonster={this.handleAddMonster}
                 />

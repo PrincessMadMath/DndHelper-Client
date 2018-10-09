@@ -5,14 +5,20 @@ export default class MultiSelect extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            options: new Set(this.props.items.flat().map(v => v.trim().toLowerCase())),
-        };
+        let uniqueOptions = new Set(this.props.items.flat().map(v => v.trim().toLowerCase()));
+        let options;
+        if (this.props.compareFunc) {
+            options = [...uniqueOptions].sort(this.props.compareFunc);
+        } else {
+            options = [...uniqueOptions].sort();
+        }
 
-        this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            options: options
+        };
     }
 
-    handleChange(event) {
+    handleChange = event => {
         const selectedOptions = [...event.target.options].filter(o => o.selected).map(o => o.value);
 
         if (selectedOptions.length === 0) {
@@ -31,12 +37,12 @@ export default class MultiSelect extends React.Component {
                 )
             );
         }
-    }
+    };
 
     render() {
         return (
             <select multiple onChange={this.handleChange}>
-                {[...this.state.options].map(option => (
+                {this.state.options.map(option => (
                     <option key={option} value={option}>
                         {option}
                     </option>

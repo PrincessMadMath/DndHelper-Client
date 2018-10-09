@@ -14,6 +14,8 @@ const customStyles = {
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
         padding: 0,
+        background: 0,
+        border: 0
     },
 };
 
@@ -46,7 +48,7 @@ class SpellModel extends React.Component {
                     .trim()
                     .replace("*", "")
         );
-        return <Spell spell={spell} />;
+        return <Spell spell={spell} opened={true} />;
     }
 
     render() {
