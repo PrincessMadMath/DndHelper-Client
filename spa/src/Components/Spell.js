@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import SpellComponent from "./SubComponents/SpellComponents";
-import ManualComponent from "./StyledComponent/ManualComponent";
+import DndStyledContainer from "./StyledComponent/DndStyledContainer";
 import styled from "styled-components";
 
 const showdown = require("showdown");
@@ -49,7 +49,7 @@ export default class Spell extends React.Component {
         const { spell } = this.props;
 
         return (
-            <ManualComponent>
+            <DndStyledContainer>
                 <div
                     className="flex flex-row justify-between flex-wrap pointer"
                     onClick={this.spellClick}
@@ -92,7 +92,7 @@ export default class Spell extends React.Component {
                         <b>Class:</b> {spell.class.join(", ")}
                     </p>
                 </SpellInfo>
-            </ManualComponent>
+            </DndStyledContainer>
         );
     }
 }

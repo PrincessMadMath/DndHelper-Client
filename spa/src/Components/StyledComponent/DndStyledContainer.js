@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import styled from "styled-components";
 
-const ManualStyle = styled.div`
+const DndContainer = styled.div`
     position: relative;
     border-style: solid;
     border-color: #8e2f1a;
@@ -23,7 +23,7 @@ const ManualStyle = styled.div`
         bottom: 0;
         left: 0;
         background-image: linear-gradient(to bottom right, firebrick 0%, darkolivegreen 100%);
-        opacity: 0.07;
+        opacity: 0.1;
         pointer-events: none;
     }
 
@@ -35,30 +35,28 @@ const ManualStyle = styled.div`
         bottom: 0;
         left: 0;
         background-image: linear-gradient(
-            30deg,
+            45deg,
             rgba(255, 255, 255, 0) 71%,
             rgba(255, 255, 255, 1) 72%,
             rgba(255, 255, 255, 1) 80%,
             rgba(255, 255, 255, 0) 81%
         );
-        background-size: 250% 340%;
+        background-size: 450% 350%;
         background-position: -13% 0%;
         opacity: 0.4;
         pointer-events: none;
     }
 
     &:hover:after {
-        /* background-image: linear-gradient(to bottom right,#552f4b,#dc4225); */
         background-position: -190% 0%;
-        transition-duration: 0.8s;
+        transition-duration: 1.2s;
         transition-timing-function: ease-out;
         opacity: 0;
-        /* transition-duration: 0s; */
     }
 `;
 
-export default class ManualComponent extends Component {
+export default class DndStyledContainer extends Component {
     render() {
-        return <ManualStyle>{this.props.children}</ManualStyle>;
+        return <DndContainer>{this.props.children}</DndContainer>;
     }
 }

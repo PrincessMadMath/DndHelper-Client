@@ -7,7 +7,7 @@ import Actions from "./SubComponents/Actions";
 import FightInfo from "./SubComponents/FightInfo";
 import OtherInfo from "./SubComponents/OtherInfo";
 import SpellCasting from "./SubComponents/SpellCasting";
-import ManualComponent from "./StyledComponent/ManualComponent";
+import DndStyledContainer from "./StyledComponent/DndStyledContainer";
 import styled from "styled-components";
 
 class Monster extends React.Component {
@@ -23,7 +23,7 @@ class Monster extends React.Component {
         const { monster, spells } = this.props;
 
         return (
-            <ManualComponent>
+            <DndStyledContainer>
                 <div onClick={this.monsterClick}>
                     <MonsterLink
                         as={Link}
@@ -45,7 +45,7 @@ class Monster extends React.Component {
                     />
                 </MonsterInfo>
                 {this.props.children}
-            </ManualComponent>
+            </DndStyledContainer>
         );
     }
 }
