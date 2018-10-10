@@ -35,27 +35,24 @@ const ManualStyle = styled.div`
         bottom: 0;
         left: 0;
         background-image: linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0) 74%,
-            rgba(255, 255, 255, 0.94) 75%,
-            rgba(255, 255, 255, 0.94) 77%,
-            rgba(255, 255, 255, 0.3) 78%,
-            rgba(255, 255, 255, 1) 81%,
-            rgba(255, 255, 255, 0) 97%,
-            rgba(255, 255, 255, 0) 100%
+            30deg,
+            rgba(255, 255, 255, 0) 71%,
+            rgba(255, 255, 255, 1) 72%,
+            rgba(255, 255, 255, 1) 80%,
+            rgba(255, 255, 255, 0) 81%
         );
-        background-size: 500% 100%;
-        background-position: 0% 0%;
-        opacity: 0.8;
-        transition-duration: 0s;
+        background-size: 250% 340%;
+        background-position: -13% 0%;
+        opacity: 0.4;
         pointer-events: none;
     }
 
     &:hover:after {
         /* background-image: linear-gradient(to bottom right,#552f4b,#dc4225); */
-        background-position: -120% 0%;
+        background-position: -190% 0%;
         transition-duration: 0.8s;
+        transition-timing-function: ease-out;
+        opacity: 0;
         /* transition-duration: 0s; */
     }
 `;
