@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createContext } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import monsters from "../data/monsters.json";
@@ -24,12 +24,12 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-class App extends Component {
-    state = {
-        monstersDB: monsters,
-        spellsDB: spells,
-    };
+export const DBContext = createContext({
+    monstersDB: monsters,
+    spellsDB: spells,
+});
 
+class App extends Component {
     render() {
         return (
             <div className="App">
@@ -41,38 +41,26 @@ class App extends Component {
                         exact
                         path="/monsters"
                         render={props => (
-                            <MonsterDatabase
-                                monstersDB={this.state.monstersDB}
-                                spellsDB={this.state.spellsDB}
-                                {...props}
-                            />
+                            <MonsterDatabase monstersDB={monsters} {...props} />
                         )}
                     />
                     <Route
                         path="/monsters/:monsterId"
                         render={props => (
-                            <MonsterSingle
-                                monstersDB={this.state.monstersDB}
-                                spellsDB={this.state.spellsDB}
-                                {...props}
-                            />
+                            <MonsterSingle monstersDB={monsters} {...props} />
                         )}
                     />
                     <Route
                         path="/encounter"
                         render={props => (
-                            <Encounter
-                                monstersDB={this.state.monstersDB}
-                                spellsDB={this.state.spellsDB}
-                                {...props}
-                            />
+                            <Encounter monstersDB={monsters} {...props} />
                         )}
                     />
                     <Route
                         exact
                         path="/spells"
                         render={props => (
-                            <SpellDatabase spellsDB={this.state.spellsDB} {...props} />
+                            <SpellDatabase {...props} spellsDB={spells} />
                         )}
                     />
                     <Route component={NotFound} />

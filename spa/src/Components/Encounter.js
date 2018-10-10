@@ -12,7 +12,7 @@ const EncounterComponent = styled.div`
 
 export default class Encounter extends PureComponent {
     render() {
-        const { monstersDB, spellsDB } = this.props;
+        const { monstersDB } = this.props;
 
         const queries = queryString.parse(this.props.location.search);
         const list = queries.list.split(",");
@@ -26,7 +26,7 @@ export default class Encounter extends PureComponent {
                 <h3>Encounter</h3>
                 <EncounterComponent>
                     {monstersToDisplay.map(function(monster) {
-                        return <Monster key={monster.name} monster={monster} spells={spellsDB} />;
+                        return <Monster key={monster.name} monster={monster} />;
                     })}
                 </EncounterComponent>
             </div>

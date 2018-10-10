@@ -39,7 +39,7 @@ class MonsterDatabase extends React.Component {
     };
 
     render() {
-        const { spellsDB, monstersDB } = this.props;
+        const { monstersDB } = this.props;
         const { filteredMonsters } = this.state;
 
         return (
@@ -56,7 +56,6 @@ class MonsterDatabase extends React.Component {
                              callback={mask => this.setMask("cr_mask", mask)} />
                 <MonsterList
                     visibleMonsters={filteredMonsters}
-                    spellsDB={spellsDB}
                     onAddMonster={this.handleAddMonster}
                 />
             </div>

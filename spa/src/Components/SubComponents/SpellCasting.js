@@ -1,10 +1,9 @@
 /* Utils */
 import React from "react";
-import PropTypes from "prop-types";
 
 import SpellModal from "./SpellModal";
 
-const SpellCasting = ({ monsterSpells, spellsDatabase }) => {
+const SpellCasting = ({ monsterSpells }) => {
     if (monsterSpells == null) {
         return <div />;
     }
@@ -15,51 +14,24 @@ const SpellCasting = ({ monsterSpells, spellsDatabase }) => {
             <hr />
             <p>{monsterSpells.desc}</p>
             {monsterSpells.details.map(x => (
-                <SpellDetail key={x.details} spellsByLevel={x} spellsDatabase={spellsDatabase} />
+                <SpellDetail key={x.details} spellsByLevel={x} />
             ))}
         </div>
     );
 };
 
-const SpellDetail = ({ spellsByLevel, spellsDatabase }) => {
+const SpellDetail = ({ spellsByLevel }) => {
     return (
         <div>
             <strong>{spellsByLevel.details}: </strong>
-            {spellsByLevel.spells.map((x, index) => (
-                <SpellItem
-                    key={x}
-                    spellName={x}
-                    isLastOne={index === spellsByLevel.spells.length - 1}
-                    spellsDatabase={spellsDatabase}
-                />
+            {spellsByLevel.spells.map((spellName, index) => (
+                <span key={spellName}>
+                    <SpellModal name={spellName} />
+                    {index === spellsByLevel.spells.length - 1 ? "" : ", "}
+                </span>
             ))}
         </div>
     );
-};
-
-const SpellItem = ({ spellName, isLastOne, spellsDatabase }) => {
-    return (
-        <span>
-            <SpellModal name={spellName} spellsDatabase={spellsDatabase} />
-            {isLastOne ? "" : ", "}
-        </span>
-    );
-};
-
-SpellCasting.propType = {
-    monsterSpells: PropTypes.shape({
-        desc: PropTypes.string.isRequired,
-        details: PropTypes.array.isRequired,
-    }).isRequired,
-    spellsDatabase: PropTypes.shape({
-        desc: PropTypes.string.isRequired,
-        details: PropTypes.array.isRequired,
-    }).isRequired,
-};
-
-SpellDetail.propType = {
-    details: PropTypes.string.isRequired,
-    spells: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default SpellCasting;

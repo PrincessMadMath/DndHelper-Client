@@ -9,14 +9,14 @@ class MonsterSingle extends React.Component {
     };
 
     render() {
-        const { monstersDB, spellsDB } = this.props;
+        const { monstersDB } = this.props;
         const monsterId = this.props.match.params.monsterId;
 
         const monster = monstersDB.find(x => x.name === monsterId);
 
         return (
             <div>
-                <Monster monster={monster} spells={spellsDB} />
+                <Monster monster={monster} />
             </div>
         );
     }

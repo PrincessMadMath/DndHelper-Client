@@ -20,7 +20,7 @@ class Monster extends React.Component {
     };
 
     render() {
-        const { monster, spells } = this.props;
+        const { monster } = this.props;
         const { isOpened } = this.state;
 
         return (
@@ -38,7 +38,7 @@ class Monster extends React.Component {
                     <Abilities abilities={monster.abilities} />
                     <OtherInfo monster={monster} />
                     <SpecialAbilities title="Features" specialAbilities={monster.features} />
-                    <SpellCasting monsterSpells={monster.spellCasting} spellsDatabase={spells} />
+                    <SpellCasting monsterSpells={monster.spellCasting} />
                     <Actions actions={monster.actions} />
                     <SpecialAbilities
                         title="Legendary Actions"

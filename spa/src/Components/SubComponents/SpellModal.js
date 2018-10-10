@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import FaClose from "react-icons/lib/fa/close";
 
 import Spell from "../Spell";
+import { DBContext } from "../App";
 
 const customStyles = {
     content: {
@@ -39,10 +40,10 @@ class SpellModal extends React.Component {
         this.setState({ modalIsOpen: false });
     }
 
-    get_spell_component() {
+    get_spell_component(spellsDB) {
         // Remove all non Alpha characters (we have ' and ` mismatches in our lists)
         const lookingFor = this.props.name.replace(/\W/g, "").toLowerCase();
-        const spellIndex = this.props.spellsDatabase
+        const spellIndex = spellsDB
             .map(spell => spell.name.replace(/\W/g, "").toLowerCase())
             .findIndex(
                 // sometimes the spell info in the monster has more details
@@ -51,9 +52,11 @@ class SpellModal extends React.Component {
             );
 
         if (spellIndex === -1) {
-            console.error("Could not find spell " + this.props.name);
+            const errorMsg = "Could not find spell " + this.props.name;
+            console.error(errorMsg);
+            return <span>Error: {errorMsg}</span>;
         } else {
-            return <Spell spell={this.props.spellsDatabase[spellIndex]} opened={true} />;
+            return <Spell spell={spellsDB[spellIndex]} opened={true} />;
         }
     }
 
@@ -69,7 +72,9 @@ class SpellModal extends React.Component {
                     onRequestClose={this.closeModal}
                     style={customStyles}
                 >
-                    {this.get_spell_component()}
+                    <DBContext.Consumer>
+                        {value => this.get_spell_component(value.spellsDB)}
+                    </DBContext.Consumer>
 
                     <FaClose
                         size={30}

@@ -14,7 +14,6 @@ const AddButton = styled.div`
 export default class MonsterList extends Component {
     static propTypes = {
         visibleMonsters: PropTypes.array.isRequired,
-        spellsDB: PropTypes.array.isRequired,
     };
 
     componentDidUpdate() {
@@ -26,14 +25,14 @@ export default class MonsterList extends Component {
     }
 
     render() {
-        const { visibleMonsters, spellsDB, onAddMonster } = this.props;
+        const { visibleMonsters, onAddMonster } = this.props;
 
         return (
             <div>
                 {visibleMonsters.map(function(monster) {
                     return (
                         <LazyLoad key={monster.name} height={88}>
-                            <Monster monster={monster} spells={spellsDB}>
+                            <Monster monster={monster}>
                                 <AddButton>
                                     <button onClick={() => onAddMonster(monster.name)}>+</button>
                                 </AddButton>
