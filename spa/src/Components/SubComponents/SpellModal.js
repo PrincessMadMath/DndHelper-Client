@@ -40,15 +40,21 @@ class SpellModal extends React.Component {
     }
 
     get_spell_component() {
-        const spell = this.props.spellsDatabase.find(
-            x =>
-                x.name.toLowerCase().trim() ===
-                this.props.name
-                    .toLowerCase()
-                    .trim()
-                    .replace("*", "")
-        );
-        return <Spell spell={spell} opened={true} />;
+        // Remove all non Alpha characters (we have ' and ` mismatches in our lists)
+        const lookingFor = this.props.name.replace(/\W/g, "").toLowerCase();
+        const spellIndex = this.props.spellsDatabase
+            .map(spell => spell.name.replace(/\W/g, "").toLowerCase())
+            .findIndex(
+                // sometimes the spell info in the monster has more details
+                // e.g. (cast daily).
+                x => lookingFor.includes(x),
+            );
+
+        if (spellIndex === -1) {
+            console.error("Could not find spell " + this.props.name);
+        } else {
+            return <Spell spell={this.props.spellsDatabase[spellIndex]} opened={true} />;
+        }
     }
 
     render() {

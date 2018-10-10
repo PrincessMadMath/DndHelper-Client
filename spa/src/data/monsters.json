@@ -111,7 +111,8 @@
           {
             "details": "Cantrip (at will)",
             "spells": [
-              "blade ward. dancing lights",
+              "blade ward",
+              "dancing lights",
               "mending",
               "message",
               "ray of frost"
@@ -165,7 +166,8 @@
           {
             "details": "7th level (1 slot)",
             "spells": [
-              "symbol* teleport"
+              "symbol*",
+              "teleport"
             ]
           }
         ]
@@ -5095,7 +5097,7 @@
             "details": "4th level (3 slots)",
             "spells": [
               "blight",
-              "Everard's black tentacles",
+              "Evard's black tentacles",
               "polymorph"
             ]
           },
@@ -18054,7 +18056,7 @@
           {
             "details": "1st level (4 slots)",
             "spells": [
-              "protection from good and evil",
+              "protection from evil and good",
               "magic missile",
               "shield"
             ]
@@ -25409,7 +25411,7 @@
               "cure wounds",
               "divine favor",
               "inflict wounds",
-              "protection from good",
+              "protection from (evil and) good",
               "shield of faith"
             ]
           },
@@ -25427,7 +25429,7 @@
             "spells": [
               "bestow curse",
               "dispel magic",
-              "spirit guardian"
+              "spirit guardians"
             ]
           }
         ]
@@ -31930,7 +31932,7 @@
             "spells": [
               "divination",
               "freedom of movement",
-              "guardians of faith"
+              "guardian of faith"
             ]
           },
           {
@@ -35564,12 +35566,6 @@
             ]
           },
           {
-            "details": "6th level spellcaster. Her spellcasting ability is Intelligence (spell save DC 13; +5 to hit with spell attacks). She has the following wizard spells prepared",
-            "spells": [
-              ""
-            ]
-          },
-          {
             "details": "1st level (4 slots)",
             "spells": [
               "mage armor",
@@ -35884,8 +35880,7 @@
           {
             "details": "Cantrip (at will)",
             "spells": [
-              "eldritch blast (range 300 ft.",
-              "+4 bonus to each damage roll)",
+              "eldritch blast (range 300 ft. +4 bonus to each damage roll)",
               "guidance",
               "mage hand",
               "minor illusion",
@@ -51382,7 +51377,7 @@
               "dispel magic",
               "revivify",
               "spirit guardians",
-              "water wall"
+              "wall of water"
             ]
           },
           {
@@ -56072,8 +56067,7 @@
           {
             "details": "Cantrip (at will)",
             "spells": [
-              "eldritch blast (range 300 ft.",
-              "+3 bonus to each damage roll)",
+              "eldritch blast (range 300 ft. +3 bonus to each damage roll)",
               "friends",
               "message",
               "minor illusion",
@@ -56314,8 +56308,7 @@
           {
             "details": "Cantrip (at will)",
             "spells": [
-              "eldritch blast (range 300 ft.",
-              "+3 bonus to each damage roll)",
+              "eldritch blast (range 300 ft. +3 bonus to each damage roll)",
               "friends",
               "guidance",
               "mage hand",
