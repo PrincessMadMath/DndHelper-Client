@@ -1,5 +1,6 @@
 import React, { Component, createContext } from "react";
 import { Route, Switch } from "react-router-dom";
+import Modal from "react-modal";
 
 import monsters from "../data/monsters.json";
 import spells from "../data/spells.json";
@@ -28,6 +29,9 @@ export const DBContext = createContext({
     monstersDB: monsters,
     spellsDB: spells,
 });
+
+// See http://reactcommunity.org/react-modal/accessibility/
+Modal.setAppElement("#root");
 
 class App extends Component {
     render() {
