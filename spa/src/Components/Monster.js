@@ -7,7 +7,7 @@ import Actions from "./SubComponents/Actions";
 import FightInfo from "./SubComponents/FightInfo";
 import OtherInfo from "./SubComponents/OtherInfo";
 import SpellCasting from "./SubComponents/SpellCasting";
-import DndStyledContainer from "./StyledComponent/DndStyledContainer";
+import DndContainer from "./StyledComponent/DndContainer";
 import styled from "styled-components";
 
 class Monster extends React.Component {
@@ -21,10 +21,11 @@ class Monster extends React.Component {
 
     render() {
         const { monster, spells } = this.props;
+        const { isOpened } = this.state;
 
         return (
-            <DndStyledContainer>
-                <div onClick={this.monsterClick}>
+            <DndContainer animated={!isOpened}>
+                <div onClick={this.monsterClick} className="pointer">
                     <MonsterLink
                         as={Link}
                         to={`/monsters/${monster.name}?$list=Aarakocra,Aarakocra`}
@@ -32,7 +33,7 @@ class Monster extends React.Component {
                         {monster.name}
                     </MonsterLink>
                 </div>
-                <MonsterInfo isOpened={this.state.isOpened}>
+                <MonsterInfo isOpened={isOpened}>
                     <FightInfo monster={monster} />
                     <Abilities abilities={monster.abilities} />
                     <OtherInfo monster={monster} />
@@ -45,7 +46,7 @@ class Monster extends React.Component {
                     />
                 </MonsterInfo>
                 {this.props.children}
-            </DndStyledContainer>
+            </DndContainer>
         );
     }
 }

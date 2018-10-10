@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import SpellComponent from "./SubComponents/SpellComponents";
-import DndStyledContainer from "./StyledComponent/DndStyledContainer";
+import DndContainer from "./StyledComponent/DndContainer";
 import styled from "styled-components";
 
 const showdown = require("showdown");
@@ -47,9 +47,10 @@ export default class Spell extends React.Component {
 
     render() {
         const { spell } = this.props;
+        const { isOpened } = this.state;
 
         return (
-            <DndStyledContainer>
+            <DndContainer animated={!isOpened}>
                 <div
                     className="flex flex-row justify-between flex-wrap pointer"
                     onClick={this.spellClick}
@@ -67,7 +68,7 @@ export default class Spell extends React.Component {
                         </div>
                     </div>
                 </div>
-                <SpellInfo isOpened={this.state.isOpened}>
+                <SpellInfo isOpened={isOpened}>
                     <div>
                         <p>
                             <b>Range: </b>
@@ -92,7 +93,7 @@ export default class Spell extends React.Component {
                         <b>Class:</b> {spell.class.join(", ")}
                     </p>
                 </SpellInfo>
-            </DndStyledContainer>
+            </DndContainer>
         );
     }
 }
