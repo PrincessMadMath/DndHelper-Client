@@ -30,7 +30,7 @@ const Info = ({ monster }) => {
     return (
         <div>
             <hr />
-            <div className="monter-other-info-container">
+            <div>
                 {monster.skills.length > 0 && (
                     <div>
                         <b>Skills:</b>

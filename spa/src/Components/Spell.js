@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import SpellComponent from "./SubComponents/SpellComponents";
+import ManualComponent from "./StyledComponent/ManualComponent";
+import styled from "styled-components";
 
 const showdown = require("showdown");
 const converter = new showdown.Converter();
@@ -15,16 +17,6 @@ function createMarkup(text) {
 }
 
 export default class Spell extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            opened: props.opened
-        };
-
-    }
-
     static propTypes = {
         spell: PropTypes.shape({
             level: PropTypes.number.isRequired,
@@ -38,35 +30,45 @@ export default class Spell extends React.Component {
             higherLevel: PropTypes.string,
             class: PropTypes.arrayOf(PropTypes.string).isRequired,
         }).isRequired,
-        opened: PropTypes.bool
+        opened: PropTypes.bool,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isOpened: props.opened,
+        };
+    }
+
     spellClick = () => {
-        this.setState((state) => ({ opened: !state.opened }));
+        this.setState(state => ({ isOpened: !state.isOpened }));
     };
 
     render() {
         const { spell } = this.props;
-        const clazz = this.state.opened ? "spell-opened" : "spell-collapsed";
 
         return (
-            <div className="information-box">
-                <div className="spell-header" onClick={this.spellClick}>
-                    <div className="spell-title">
-                        <h1>{spell.name}</h1>
-                        <div className="spell-type">
+            <ManualComponent>
+                <div
+                    className="flex flex-row justify-between flex-wrap pointer"
+                    onClick={this.spellClick}
+                >
+                    <div className="w6">
+                        <div className="f2">{spell.name}</div>
+                        <div className="i mb2">
                             <span>{spell.type}</span>
                             <span>{spell.canBeRitual && " (ritual)"} </span>
                         </div>
                     </div>
                     <div>
-                        <div className="spell-components">
+                        <div>
                             <SpellComponent components={spell.components} />
                         </div>
                     </div>
                 </div>
-                <div className={"spell-content " + clazz}>
-                    <div className="spell-quick-info">
+                <SpellInfo isOpened={this.state.isOpened}>
+                    <div>
                         <p>
                             <b>Range: </b>
                             {spell.range}
@@ -89,8 +91,14 @@ export default class Spell extends React.Component {
                     <p>
                         <b>Class:</b> {spell.class.join(", ")}
                     </p>
-                </div>
-            </div>
+                </SpellInfo>
+            </ManualComponent>
         );
     }
 }
+
+const SpellInfo = styled.div`
+    max-height: ${props => (props.isOpened ? "700px" : "0")};
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+`;

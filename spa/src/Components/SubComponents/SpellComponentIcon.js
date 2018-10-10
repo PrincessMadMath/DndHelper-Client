@@ -1,20 +1,48 @@
 /* Utils */
 import React from "react";
-import PropTypes from "prop-types";
+import styled from "styled-components";
 
-const SpellComponentIcon = prop => {
+const SpellComponent = styled.div`
+    /* Center logo inside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Create circle border */
+    border-style: solid;
+    border-radius: 38px;
+    width: 38px;
+    height: 38px;
+
+    opacity: ${props => (props.isRequired ? "1" : "0.05")};
+    border-color: ${props => (props.isRequired ? "#0a0" : "#555")};
+`;
+
+const ComponentImage = styled.img`
+    height: 28px;
+    display: block;
+    margin: auto;
+
+    &:hover {
+        display: none;
+    }
+`;
+
+const ComponentAlternative = styled.span`
+    display: none;
+    font-size: 2em;
+    font-weight: bold;
+
+    &:hover {
+        display: inline;
+    }
+`;
+
+export const SpellComponentIcon = ({ isRequired, icon, alternative }) => {
     return (
-        <div className={"component-item " + (prop.isRequired ? "" : "component-disabled")}>
-            <img src={prop.icon} className="component-logo" alt={prop.alternative} />
-            <span className="component-alternive">{prop.alternative[0]}</span>
-        </div>
+        <SpellComponent isRequired={isRequired}>
+            <ComponentImage src={icon} alt={alternative} />
+            <ComponentAlternative>{alternative[0]}</ComponentAlternative>
+        </SpellComponent>
     );
 };
-
-SpellComponentIcon.propTypes = {
-    isRequired: PropTypes.bool.isRequired,
-    icon: PropTypes.string.isRequired,
-    alternative: PropTypes.string.isRequired,
-};
-
-export default SpellComponentIcon;

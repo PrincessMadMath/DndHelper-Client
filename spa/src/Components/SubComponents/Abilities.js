@@ -17,7 +17,7 @@ function modifierCalculator(value) {
 
 const Ability = ({ name, value }) => {
     return (
-        <div className="monter-ability">
+        <div className="tc mv2 w3">
             <div>
                 <b>{name.substring(0, 3).toUpperCase()}</b>
             </div>
@@ -34,7 +34,7 @@ const Abilities = ({ abilities }) => {
     return (
         <div>
             <hr />
-            <div className="monster-abilities-container">
+            <div className="flex flex-row flex-wrap justify-around mh1">
                 <Ability name="Strength" value={abilities.strength} />
                 <Ability name="Dexterity" value={abilities.dexterity} />
                 <Ability name="Constitution" value={abilities.constitution} />

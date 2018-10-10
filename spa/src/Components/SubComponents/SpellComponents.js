@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 /* Components */
-import SpellComponentIcon from "./SpellComponentIcon";
+import { SpellComponentIcon } from "./SpellComponentIcon";
 
 /* Components icon */
 import concentration from "./icon/concentration.svg";
@@ -14,7 +14,7 @@ import material_money from "./icon/material_money.svg";
 
 const Components = ({ components }) => {
     return (
-        <div className="component-list">
+        <div className="flex flex-row">
             <SpellComponentIcon
                 isRequired={components.concentration}
                 icon={concentration}

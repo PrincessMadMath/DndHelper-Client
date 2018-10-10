@@ -6,7 +6,7 @@ const Action = ({ action }) => {
     return (
         <div>
             <p>
-                <span className="monster-action-name">{action.name}. </span>
+                <span className="mb0 b">{action.name}. </span>
                 {action.desc}
             </p>
         </div>
@@ -25,7 +25,7 @@ const Actions = ({ actions }) => {
 
     return (
         <div>
-            <h2 className="monster-section-name">Actions</h2>
+            <h2 className="mb0">Actions</h2>
             <hr />
             {actions.map(function(value) {
                 return (

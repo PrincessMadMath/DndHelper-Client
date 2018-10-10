@@ -11,7 +11,7 @@ const SpellCasting = ({ monsterSpells, spellsDatabase }) => {
 
     return (
         <div>
-            <h2 className="monster-section-name">Spell Casting</h2>
+            <h2 className="mb0">Spell Casting</h2>
             <hr />
             <p>{monsterSpells.desc}</p>
             {monsterSpells.details.map(x => (

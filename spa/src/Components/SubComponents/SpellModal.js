@@ -15,11 +15,11 @@ const customStyles = {
         transform: "translate(-50%, -50%)",
         padding: 0,
         background: 0,
-        border: 0
+        border: 0,
     },
 };
 
-class SpellModel extends React.Component {
+class SpellModal extends React.Component {
     constructor(props) {
         super(props);
 
@@ -54,7 +54,7 @@ class SpellModel extends React.Component {
     render() {
         return (
             <span>
-                <span className="monster-spell__name" onClick={this.openModal}>
+                <span className="underline pointer" onClick={this.openModal}>
                     {this.props.name}
                 </span>
 
@@ -63,16 +63,17 @@ class SpellModel extends React.Component {
                     onRequestClose={this.closeModal}
                     style={customStyles}
                 >
+                    {this.get_spell_component()}
+
                     <FaClose
                         size={30}
-                        className="monster-spell__close_button"
+                        className="bg-white br-100 ba hover-red pointer absolute right-1 top-1"
                         onClick={this.closeModal}
                     />
-                    {this.get_spell_component()}
                 </Modal>
             </span>
         );
     }
 }
 
-export default SpellModel;
+export default SpellModal;

@@ -32,7 +32,7 @@ const SpecialAbilities = ({ title, specialAbilities }) => {
 
     return (
         <div>
-            <h2 className="monster-section-name">{title}</h2>
+            <h2 className="mb0">{title}</h2>
             <hr />
             {specialAbilities.map(function(value) {
                 return (

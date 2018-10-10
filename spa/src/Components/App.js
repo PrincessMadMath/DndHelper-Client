@@ -11,6 +11,18 @@ import SpellDatabase from "./SpellDatabase";
 import MonsterSingle from "./MonsterSingle";
 import NotFound from "./NotFound";
 import Encounter from "./Encounter";
+import { createGlobalStyle } from "styled-components";
+
+// TODO: Refactor to tachyon
+const GlobalStyle = createGlobalStyle`
+    body {
+    margin: 0 auto;
+    padding: 0;
+    font-family: "Helvetica", "Arial", "sans-serif";
+    font-size: 14px;
+    line-height: 1.5;
+    }
+`;
 
 class App extends Component {
     state = {
@@ -21,6 +33,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
+                <GlobalStyle />
                 <Route path="/" component={Header} />
                 <Switch>
                     <Route exact path="/" component={Welcome} />
