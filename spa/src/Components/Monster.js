@@ -11,9 +11,13 @@ import DndContainer from "./StyledComponent/DndContainer";
 import styled from "styled-components";
 
 class Monster extends React.Component {
-    state = {
-        isOpened: false,
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isOpened: props.opened,
+        };
+    }
 
     monsterClick = () => {
         this.setState(state => ({ isOpened: !state.isOpened }));

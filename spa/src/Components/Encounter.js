@@ -25,7 +25,7 @@ export default class Encounter extends PureComponent {
                 <h3>Encounter</h3>
                 <EncounterComponent>
                     {monstersToDisplay.map(function(monster) {
-                        return <Monster key={monster.name} monster={monster} />;
+                        return <Monster key={monster.name} monster={monster} opened={true} />;
                     })}
                 </EncounterComponent>
             </div>

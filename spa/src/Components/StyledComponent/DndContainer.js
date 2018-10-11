@@ -9,7 +9,7 @@ const DndContainer = styled.div`
     margin: 1em;
     max-width: 45em;
     background-color: #eee5ce;
-    background-image: url("img/background.jpg");
+    background-image: url("/img/background.jpg");
     box-shadow: 6px 5px 9px -1px rgba(128, 131, 133, 0.4);
     transition-duration: 0.25s;
 
