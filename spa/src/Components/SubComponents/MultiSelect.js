@@ -1,5 +1,6 @@
 /* Utils */
 import React from "react";
+import Select from "react-select";
 
 export default class MultiSelect extends React.Component {
     // Todo[kfedorov]: Add PropTypes
@@ -17,17 +18,16 @@ export default class MultiSelect extends React.Component {
         }
 
         this.state = {
-            options: options,
+            options: options.map(o => ({ value: o, label: o })),
         };
     }
 
-    handleChange = event => {
-        const selectedOptions = [...event.target.options].filter(o => o.selected).map(o => o.value);
+    handleChange = selectedOptions => {
+        let selectedValues = selectedOptions.map(o => o.value);
 
         if (
-            selectedOptions.length === 0 ||
-            (selectedOptions.length === 1 &&
-                selectedOptions[0] === MultiSelect.DEFAULT_OPTION_VALUE)
+            selectedValues.length === 0 ||
+            (selectedValues.length === 1 && selectedValues[0] === MultiSelect.DEFAULT_OPTION_VALUE)
         ) {
             this.props.callback(new Array(this.props.items.length).fill(true));
         } else {
@@ -39,7 +39,7 @@ export default class MultiSelect extends React.Component {
                     [f]
                         .flat()
                         .some(f_flat =>
-                            selectedOptions.some(sO => f_flat.toLowerCase().includes(sO))
+                            selectedValues.some(sO => f_flat.trim().toLowerCase() === sO)
                         )
                 )
             );
@@ -48,17 +48,12 @@ export default class MultiSelect extends React.Component {
 
     render() {
         return (
-            <select multiple onChange={this.handleChange}>
-                <option value={MultiSelect.DEFAULT_OPTION_VALUE}>
-                    {" "}
-                    - Filter By {this.props.fieldName} -
-                </option>
-                {this.state.options.map(option => (
-                    <option key={option} value={option}>
-                        {option}
-                    </option>
-                ))}
-            </select>
+            <Select
+                options={this.state.options}
+                onChange={this.handleChange}
+                isMulti={true}
+                placeholder={" - Filter by " + this.props.fieldName + " - "}
+            />
         );
     }
 }
