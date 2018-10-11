@@ -44,28 +44,20 @@ class App extends Component {
                     <Route
                         exact
                         path="/monsters"
-                        render={props => (
-                            <MonsterDatabase monstersDB={monsters} {...props} />
-                        )}
+                        render={props => <MonsterDatabase monstersDB={monsters} {...props} />}
                     />
                     <Route
                         path="/monsters/:monsterId"
-                        render={props => (
-                            <MonsterSingle monstersDB={monsters} {...props} />
-                        )}
+                        render={props => <MonsterSingle monstersDB={monsters} {...props} />}
                     />
                     <Route
                         path="/encounter"
-                        render={props => (
-                            <Encounter monstersDB={monsters} {...props} />
-                        )}
+                        render={props => <Encounter monstersDB={monsters} {...props} />}
                     />
                     <Route
                         exact
                         path="/spells"
-                        render={props => (
-                            <SpellDatabase {...props} spellsDB={spells} />
-                        )}
+                        render={props => <SpellDatabase {...props} spellsDB={spells} />}
                     />
                     <Route component={NotFound} />
                 </Switch>

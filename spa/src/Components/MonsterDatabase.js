@@ -5,6 +5,7 @@ import MultiSelect from "./SubComponents/MultiSelect";
 import MaskMap from "../utils/MaskMap";
 import { forceCheck } from "react-lazyload";
 import CrComparator from "../utils/CrComparator";
+import MonsterSelector from "./MonsterSelector";
 
 class MonsterDatabase extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class MonsterDatabase extends React.Component {
         this.masks = new MaskMap(props.monstersDB.length);
         this.state = {
             filteredMonsters: props.monstersDB,
-            encounterMonster: [],
+            encounterMonsters: {},
         };
     }
 
@@ -28,27 +29,65 @@ class MonsterDatabase extends React.Component {
     };
 
     handleAddMonster = monsterName => {
-        console.log(monsterName);
+        const { encounterMonsters } = this.state;
 
-        const newEncounterMonster = this.state.encounterMonster;
-        newEncounterMonster.push(monsterName);
+        const newEncounterMonsters = Object.assign(encounterMonsters);
 
-        this.setState({ encounterMonster: newEncounterMonster });
+        if (!!newEncounterMonsters[monsterName]) {
+            newEncounterMonsters[monsterName] = newEncounterMonsters[monsterName] + 1;
+        } else {
+            newEncounterMonsters[monsterName] = 1;
+        }
+
+        this.setState({ encounterMonsters: newEncounterMonsters });
+    };
+
+    handleRemoveMonster = monsterName => {
+        const { encounterMonsters } = this.state;
+
+        const newEncounterMonsters = Object.assign(encounterMonsters);
+
+        if (!!newEncounterMonsters[monsterName]) {
+            const newCount = newEncounterMonsters[monsterName] - 1;
+            if (newCount === 0) {
+                delete newEncounterMonsters[monsterName];
+            } else {
+                newEncounterMonsters[monsterName] = newCount;
+            }
+        }
+
+        this.setState({ encounterMonster: newEncounterMonsters });
     };
 
     handleGoToEncounter = () => {
-        console.log(this.state.encounterMonster);
-        this.props.history.push(`/encounter/?list=${this.state.encounterMonster.join()}`);
+        const { encounterMonsters } = this.state;
+
+        const items = [];
+
+        for (var key in encounterMonsters) {
+            items.push(`${key}#${encounterMonsters[key]}`);
+        }
+
+        const query = items.join();
+        console.log({ query });
+
+        this.props.history.push(`/encounter/?list=${query}`);
     };
 
     render() {
         const { monstersDB } = this.props;
-        const { filteredMonsters } = this.state;
+        const { filteredMonsters, encounterMonsters } = this.state;
 
         return (
-            <div>
+            <div className="relative">
                 <h3>Monster Database</h3>
-                <button onClick={this.handleGoToEncounter}>Go to encounter</button>
+                <MonsterSelector
+                    monsters={encounterMonsters}
+                    onAddMonster={this.handleAddMonster}
+                    onRemoveMonster={this.handleRemoveMonster}
+                    onGoToEncounter={this.handleGoToEncounter}
+                />
+
                 <div className="flex flex-wrap">
                     <SearchBox
                         fieldName={"name"}
