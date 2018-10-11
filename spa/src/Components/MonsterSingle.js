@@ -4,8 +4,7 @@ import Monster from "./Monster";
 
 class MonsterSingle extends React.Component {
     static propTypes = {
-        monsters: PropTypes.array.isRequired,
-        spells: PropTypes.array.isRequired,
+        monsters: PropTypes.array.isRequired
     };
 
     render() {
