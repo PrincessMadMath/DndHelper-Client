@@ -16,11 +16,14 @@ export default class SpellDatabase extends React.Component {
         };
     }
 
-    setMask = (mask_name, mask) => {
+    createMaskSetter = mask_name => mask => {
         // we have to force a lazy-load check after filtering children since spells
         // can enter the viewport without scroll or resize
         this.masks.setMask(mask_name, mask);
-        this.setState((state, props) => ({ filteredSpells: this.masks.filter(props.spellsDB) }), forceCheck);
+        this.setState(
+            (state, props) => ({ filteredSpells: this.masks.filter(props.spellsDB) }),
+            forceCheck
+        );
     };
 
     render() {
@@ -31,20 +34,23 @@ export default class SpellDatabase extends React.Component {
             <div>
                 <SearchBox
                     fieldName={"name"}
-                    callback={mask => this.setMask("name_mask", mask)}
+                    callback={this.createMaskSetter("name_mask")}
                     items={spellsDB.map(s => s.name)}
                 />
                 <MultiSelect
+                    fieldName={"school"}
                     items={spellsDB.map(s => s.school)}
-                    callback={mask => this.setMask("school_mask", mask)}
+                    callback={this.createMaskSetter("school_mask")}
                 />
                 <MultiSelect
+                    fieldName={"class"}
                     items={spellsDB.map(s => s.class)}
-                    callback={mask => this.setMask("class_mask", mask)}
+                    callback={this.createMaskSetter("class_mask")}
                 />
                 <MultiSelect
+                    fieldName={"range"}
                     items={spellsDB.map(s => s.range)}
-                    callback={mask => this.setMask("range_mask", mask)}
+                    callback={this.createMaskSetter("range_mask")}
                 />
                 <h3>
                     Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)

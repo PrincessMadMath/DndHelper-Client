@@ -43,6 +43,7 @@ export default class Spell extends React.Component {
 
     spellClick = () => {
         this.setState(state => ({ isOpened: !state.isOpened }));
+        // Todo: add timeout to force check lazy loaded when collapsing spells
     };
 
     render() {

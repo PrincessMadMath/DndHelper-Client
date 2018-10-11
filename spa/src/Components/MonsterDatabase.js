@@ -17,11 +17,14 @@ class MonsterDatabase extends React.Component {
         };
     }
 
-    setMask = (mask_name, mask) => {
+    createMaskSetter = mask_name => mask => {
         // we have to force a lazy-load check after filtering children since spells
         // can enter the viewport without scroll or resize
         this.masks.setMask(mask_name, mask);
-        this.setState((state, props) => ({ filteredMonsters: this.masks.filter(props.monstersDB) }), forceCheck);
+        this.setState(
+            (state, props) => ({ filteredMonsters: this.masks.filter(props.monstersDB) }),
+            forceCheck
+        );
     };
 
     handleAddMonster = monsterName => {
@@ -48,12 +51,15 @@ class MonsterDatabase extends React.Component {
                 <button onClick={this.handleGoToEncounter}>Go to encounter</button>
                 <SearchBox
                     fieldName={"name"}
-                    callback={mask => this.setMask("name_mask", mask)}
+                    callback={this.createMaskSetter("name_mask")}
                     items={monstersDB.map(s => s.name)}
                 />
-                <MultiSelect items={monstersDB.map(m => m.challengeRating)}
-                             compareFunc={CrComparator}
-                             callback={mask => this.setMask("cr_mask", mask)} />
+                <MultiSelect
+                    fieldName="CR"
+                    items={monstersDB.map(m => m.challengeRating)}
+                    compareFunc={CrComparator}
+                    callback={this.createMaskSetter("cr_mask")}
+                />
                 <MonsterList
                     visibleMonsters={filteredMonsters}
                     onAddMonster={this.handleAddMonster}
