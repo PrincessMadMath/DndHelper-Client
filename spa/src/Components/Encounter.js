@@ -19,7 +19,6 @@ export default class Encounter extends PureComponent {
         const monstersToDisplay = list.map(name => {
             return monstersDB.find(x => x.name === name);
         });
-        debugger;
 
         return (
             <div>
