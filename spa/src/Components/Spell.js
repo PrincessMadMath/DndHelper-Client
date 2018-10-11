@@ -46,6 +46,14 @@ export default class Spell extends React.Component {
         // Todo: add timeout to force check lazy loaded when collapsing spells
     };
 
+    componentWillReceiveProps(nextProps) {
+        const { opened } = nextProps;
+
+        this.setState({
+            isOpened: opened,
+        });
+    }
+
     render() {
         const { spell } = this.props;
         const { isOpened } = this.state;

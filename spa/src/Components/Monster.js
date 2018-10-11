@@ -20,6 +20,14 @@ class Monster extends React.Component {
         // Todo: add timeout to force check lazy loaded when collapsing spells
     };
 
+    componentWillReceiveProps(nextProps) {
+        const { opened } = nextProps;
+
+        this.setState({
+            isOpened: opened,
+        });
+    }
+
     render() {
         const { monster } = this.props;
         const { isOpened } = this.state;

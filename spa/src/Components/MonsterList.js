@@ -32,7 +32,7 @@ export default class MonsterList extends Component {
                 {visibleMonsters.map(function(monster) {
                     return (
                         <LazyLoad key={monster.name} height={88}>
-                            <Monster monster={monster}>
+                            <Monster monster={monster} opened={visibleMonsters.length === 1}>
                                 <AddButton>
                                     <button onClick={() => onAddMonster(monster.name)}>+</button>
                                 </AddButton>
