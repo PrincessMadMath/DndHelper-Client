@@ -1,6 +1,7 @@
 /* Utils */
 import React from "react";
 import Select from "react-select";
+import Filter from "../StyledComponent/Filter";
 
 export default class MultiSelect extends React.Component {
     // Todo[kfedorov]: Add PropTypes
@@ -48,12 +49,15 @@ export default class MultiSelect extends React.Component {
 
     render() {
         return (
-            <Select
-                options={this.state.options}
-                onChange={this.handleChange}
-                isMulti={true}
-                placeholder={" - Filter by " + this.props.fieldName + " - "}
-            />
+            <Filter>
+                <Select
+                    className="w5"
+                    options={this.state.options}
+                    onChange={this.handleChange}
+                    isMulti={true}
+                    placeholder={" - Filter by " + this.props.fieldName + " - "}
+                />
+            </Filter>
         );
     }
 }

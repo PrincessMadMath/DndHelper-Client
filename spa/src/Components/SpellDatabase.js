@@ -1,7 +1,7 @@
 import React from "react";
-import Spell from "./Spell";
 import LazyLoad, { forceCheck } from "react-lazyload";
 
+import Spell from "./Spell";
 import SearchBox from "./SubComponents/SearchBox";
 import MultiSelect from "./SubComponents/MultiSelect";
 import MaskMap from "../utils/MaskMap";
@@ -32,26 +32,28 @@ export default class SpellDatabase extends React.Component {
 
         return (
             <div>
-                <SearchBox
-                    fieldName={"name"}
-                    callback={this.createMaskSetter("name_mask")}
-                    items={spellsDB.map(s => s.name)}
-                />
-                <MultiSelect
-                    fieldName={"school"}
-                    items={spellsDB.map(s => s.school)}
-                    callback={this.createMaskSetter("school_mask")}
-                />
-                <MultiSelect
-                    fieldName={"class"}
-                    items={spellsDB.map(s => s.class)}
-                    callback={this.createMaskSetter("class_mask")}
-                />
-                <MultiSelect
-                    fieldName={"range"}
-                    items={spellsDB.map(s => s.range)}
-                    callback={this.createMaskSetter("range_mask")}
-                />
+                <div className="flex flex-wrap">
+                    <SearchBox
+                        fieldName={"name"}
+                        callback={this.createMaskSetter("name_mask")}
+                        items={spellsDB.map(s => s.name)}
+                    />
+                    <MultiSelect
+                        fieldName={"school"}
+                        items={spellsDB.map(s => s.school)}
+                        callback={this.createMaskSetter("school_mask")}
+                    />
+                    <MultiSelect
+                        fieldName={"class"}
+                        items={spellsDB.map(s => s.class)}
+                        callback={this.createMaskSetter("class_mask")}
+                    />
+                    <MultiSelect
+                        fieldName={"range"}
+                        items={spellsDB.map(s => s.range)}
+                        callback={this.createMaskSetter("range_mask")}
+                    />
+                </div>
                 <h3>
                     Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)
                 </h3>

@@ -49,17 +49,19 @@ class MonsterDatabase extends React.Component {
             <div>
                 <h3>Monster Database</h3>
                 <button onClick={this.handleGoToEncounter}>Go to encounter</button>
-                <SearchBox
-                    fieldName={"name"}
-                    callback={this.createMaskSetter("name_mask")}
-                    items={monstersDB.map(s => s.name)}
-                />
-                <MultiSelect
-                    fieldName="CR"
-                    items={monstersDB.map(m => m.challengeRating)}
-                    compareFunc={CrComparator}
-                    callback={this.createMaskSetter("cr_mask")}
-                />
+                <div className="flex flex-wrap">
+                    <SearchBox
+                        fieldName={"name"}
+                        callback={this.createMaskSetter("name_mask")}
+                        items={monstersDB.map(s => s.name)}
+                    />
+                    <MultiSelect
+                        fieldName="CR"
+                        items={monstersDB.map(m => m.challengeRating)}
+                        compareFunc={CrComparator}
+                        callback={this.createMaskSetter("cr_mask")}
+                    />
+                </div>
                 <MonsterList
                     visibleMonsters={filteredMonsters}
                     onAddMonster={this.handleAddMonster}
