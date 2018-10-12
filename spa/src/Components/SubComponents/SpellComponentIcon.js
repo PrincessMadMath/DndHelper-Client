@@ -16,26 +16,26 @@ const SpellComponent = styled.div`
 
     opacity: ${props => (props.isRequired ? "1" : "0.05")};
     border-color: ${props => (props.isRequired ? "#0a0" : "#555")};
+
+    &:hover img {
+        display: none;
+    }
+
+    &:hover span {
+        display: inline;
+    }
 `;
 
 const ComponentImage = styled.img`
     height: 28px;
     display: block;
     margin: auto;
-
-    &:hover {
-        display: none;
-    }
 `;
 
 const ComponentAlternative = styled.span`
     display: none;
     font-size: 2em;
     font-weight: bold;
-
-    &:hover {
-        display: inline;
-    }
 `;
 
 export const SpellComponentIcon = ({ isRequired, icon, alternative }) => {
