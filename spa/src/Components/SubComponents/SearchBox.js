@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Filter from "../StyledComponent/Filter";
 import { throttle } from "throttle-debounce";
+import WordMatch from "../../utils/WordSearch";
 
 export default class SearchBox extends React.Component {
     static propTypes = {
@@ -11,7 +12,7 @@ export default class SearchBox extends React.Component {
     };
 
     callback = throttle(250, term => {
-        this.props.callback(this.props.items.map(f => f.toLowerCase().includes(term)));
+        this.props.callback(this.props.items.map(f => WordMatch(term, f)));
     });
 
     handleChange = event => {
