@@ -9,7 +9,16 @@ export default class SearchBox extends React.Component {
     static propTypes = {
         items: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
         fieldName: PropTypes.string.isRequired,
+        initialValue: PropTypes.string,
     };
+
+    constructor(props) {
+        super(props);
+
+        if (this.props.initialValue) {
+            this.callback(this.props.initialValue);
+        }
+    }
 
     callback = throttle(250, term => {
         this.props.callback(this.props.items.map(f => WordMatch(term, f)));
@@ -25,6 +34,7 @@ export default class SearchBox extends React.Component {
                 <input
                     className="css-1hwfws3 bw0 bg-transparent h-100"
                     type="text"
+                    defaultValue={this.props.initialValue}
                     onChange={this.handleChange}
                     autoFocus
                     placeholder={"Search by " + this.props.fieldName + ": "}

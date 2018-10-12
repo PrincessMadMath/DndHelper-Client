@@ -6,6 +6,7 @@ import MaskMap from "../utils/MaskMap";
 import { forceCheck } from "react-lazyload";
 import CrComparator from "../utils/CrComparator";
 import MonsterSelector from "./MonsterSelector";
+import queryString from "query-string";
 
 class MonsterDatabase extends React.Component {
     constructor(props) {
@@ -92,6 +93,7 @@ class MonsterDatabase extends React.Component {
                     <SearchBox
                         fieldName={"name"}
                         callback={this.createMaskSetter("name_mask")}
+                        initialValue={ queryString.parse(this.props.location.search).q}
                         items={monstersDB.map(s => s.name)}
                     />
                     <MultiSelect

@@ -5,6 +5,7 @@ import Spell from "./Spell";
 import SearchBox from "./SubComponents/SearchBox";
 import MultiSelect from "./SubComponents/MultiSelect";
 import MaskMap from "../utils/MaskMap";
+import queryString from "query-string";
 
 export default class SpellDatabase extends React.Component {
     constructor(props) {
@@ -38,6 +39,7 @@ export default class SpellDatabase extends React.Component {
                 <div className="flex flex-wrap">
                     <SearchBox
                         fieldName={"name"}
+                        initialValue={ queryString.parse(this.props.location.search).q}
                         callback={this.createMaskSetter("name_mask")}
                         items={spellsDB.map(s => s.name)}
                     />
