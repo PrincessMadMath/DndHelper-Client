@@ -5,8 +5,6 @@ import Filter from "../StyledComponent/Filter";
 
 export default class MultiSelect extends React.Component {
     // Todo[kfedorov]: Add PropTypes
-    static DEFAULT_OPTION_VALUE = "DEFAULT OPTION VALUE";
-
     constructor(props) {
         super(props);
 
@@ -26,10 +24,7 @@ export default class MultiSelect extends React.Component {
     handleChange = selectedOptions => {
         let selectedValues = selectedOptions.map(o => o.value);
 
-        if (
-            selectedValues.length === 0 ||
-            (selectedValues.length === 1 && selectedValues[0] === MultiSelect.DEFAULT_OPTION_VALUE)
-        ) {
+        if (selectedValues.length === 0) {
             this.props.callback(new Array(this.props.items.length).fill(true));
         } else {
             this.props.callback(
