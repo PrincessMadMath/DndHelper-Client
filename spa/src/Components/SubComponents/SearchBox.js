@@ -22,6 +22,8 @@ export default class SearchBox extends React.Component {
 
     callback = throttle(250, term => {
         this.props.callback(this.props.items.map(f => WordMatch(term, f)));
+        // Todo: find a better place for this eventually
+        window.history.replaceState(null,null, "?q="+term);
     });
 
     handleChange = event => {
