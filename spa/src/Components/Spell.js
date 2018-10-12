@@ -77,38 +77,39 @@ export default class Spell extends React.Component {
                         </div>
                     </div>
                 </div>
-                <SpellInfo isOpened={isOpened}>
-                    <div>
+                {isOpened && (
+                    <SpellInfo>
+                        <div>
+                            <p>
+                                <b>Range: </b>
+                                {spell.range}
+                                <br />
+                                <b>Duration: </b>
+                                {spell.duration}
+                                <br />
+                                <b>Casting time: </b>
+                                {spell.castingTime}
+                                <br />
+                            </p>
+                        </div>
+                        <p dangerouslySetInnerHTML={createMarkup(spell.description)} />
+                        {spell.higherLevel && (
+                            <p>
+                                <b>At higher level. </b>
+                                {spell.higherLevel}
+                            </p>
+                        )}
                         <p>
-                            <b>Range: </b>
-                            {spell.range}
-                            <br />
-                            <b>Duration: </b>
-                            {spell.duration}
-                            <br />
-                            <b>Casting time: </b>
-                            {spell.castingTime}
-                            <br />
+                            <b>Class:</b> {spell.class.join(", ")}
                         </p>
-                    </div>
-                    <p dangerouslySetInnerHTML={createMarkup(spell.description)} />
-                    {spell.higherLevel && (
-                        <p>
-                            <b>At higher level. </b>
-                            {spell.higherLevel}
-                        </p>
-                    )}
-                    <p>
-                        <b>Class:</b> {spell.class.join(", ")}
-                    </p>
-                </SpellInfo>
+                    </SpellInfo>
+                )}
             </DndContainer>
         );
     }
 }
 
 const SpellInfo = styled.div`
-    max-height: ${props => (props.isOpened ? "700px" : "0")};
     overflow: hidden;
     transition: max-height 0.5s ease-in-out;
 `;

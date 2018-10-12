@@ -46,18 +46,20 @@ class Monster extends React.Component {
                         {monster.name}
                     </MonsterLink>
                 </div>
-                <MonsterInfo isOpened={isOpened}>
-                    <FightInfo monster={monster} />
-                    <Abilities abilities={monster.abilities} />
-                    <OtherInfo monster={monster} />
-                    <SpecialAbilities title="Features" specialAbilities={monster.features} />
-                    <SpellCasting monsterSpells={monster.spellCasting} />
-                    <Actions actions={monster.actions} />
-                    <SpecialAbilities
-                        title="Legendary Actions"
-                        specialAbilities={monster.legendaryActions}
-                    />
-                </MonsterInfo>
+                {isOpened && (
+                    <MonsterInfo isOpened={isOpened}>
+                        <FightInfo monster={monster} />
+                        <Abilities abilities={monster.abilities} />
+                        <OtherInfo monster={monster} />
+                        <SpecialAbilities title="Features" specialAbilities={monster.features} />
+                        <SpellCasting monsterSpells={monster.spellCasting} />
+                        <Actions actions={monster.actions} />
+                        <SpecialAbilities
+                            title="Legendary Actions"
+                            specialAbilities={monster.legendaryActions}
+                        />
+                    </MonsterInfo>
+                )}
                 {this.props.children}
             </DndContainer>
         );
@@ -69,7 +71,6 @@ const MonsterLink = styled.div.attrs({
 })``;
 
 const MonsterInfo = styled.div`
-    max-height: ${props => (props.isOpened ? "2000px" : "0")};
     overflow: hidden;
     transition: max-height 0.5s ease-in-out;
 `;

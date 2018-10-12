@@ -32,6 +32,9 @@ export default class SpellDatabase extends React.Component {
 
         return (
             <div>
+                <h3>
+                    Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)
+                </h3>
                 <div className="flex flex-wrap">
                     <SearchBox
                         fieldName={"name"}
@@ -54,9 +57,6 @@ export default class SpellDatabase extends React.Component {
                         callback={this.createMaskSetter("range_mask")}
                     />
                 </div>
-                <h3>
-                    Spell Database - {spellsDB.length} results ({filteredSpells.length} visible)
-                </h3>
                 {filteredSpells.map((spell, i) => (
                     <LazyLoad key={spell.name} height={113} offset={500} once={true}>
                         <Spell key={i} spell={spell} opened={filteredSpells.length === 1} />

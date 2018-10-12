@@ -80,7 +80,7 @@ class MonsterDatabase extends React.Component {
 
         return (
             <div className="relative">
-                <h3>Monster Database</h3>
+                <h3>Monster Database -  {monstersDB.length} results ({filteredMonsters.length} visible)</h3>
                 <MonsterSelector
                     monsters={encounterMonsters}
                     onAddMonster={this.handleAddMonster}

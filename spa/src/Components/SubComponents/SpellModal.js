@@ -48,7 +48,7 @@ class SpellModal extends React.Component {
             .findIndex(
                 // sometimes the spell info in the monster has more details
                 // e.g. (cast daily).
-                x => lookingFor.includes(x),
+                x => lookingFor.includes(x)
             );
 
         if (spellIndex === -1) {
@@ -66,22 +66,19 @@ class SpellModal extends React.Component {
                 <span className="underline pointer" onClick={this.openModal}>
                     {this.props.name}
                 </span>
+                {this.state.modalIsOpen && (
+                    <Modal isOpen={true} onRequestClose={this.closeModal} style={customStyles}>
+                        <DBContext.Consumer>
+                            {value => this.get_spell_component(value.spellsDB)}
+                        </DBContext.Consumer>
 
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    style={customStyles}
-                >
-                    <DBContext.Consumer>
-                        {value => this.get_spell_component(value.spellsDB)}
-                    </DBContext.Consumer>
-
-                    <FaClose
-                        size={30}
-                        className="bg-white br-100 ba hover-red pointer absolute right-1 top-1"
-                        onClick={this.closeModal}
-                    />
-                </Modal>
+                        <FaClose
+                            size={30}
+                            className="bg-white br-100 ba hover-red pointer absolute right-1 top-1"
+                            onClick={this.closeModal}
+                        />
+                    </Modal>
+                )}
             </span>
         );
     }
