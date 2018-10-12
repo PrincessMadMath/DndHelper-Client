@@ -3,7 +3,7 @@
  * Better explained with example:
  * query: ymw
  * matches Yuan-ti Mind Whisperer
- * -       -    -
+ *         -       -    -
  * It would also get matched by queries such as: yutmiwhis.
  *
  * Todo: Find dynamic programming solution to this
