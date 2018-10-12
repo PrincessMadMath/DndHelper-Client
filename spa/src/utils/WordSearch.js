@@ -20,7 +20,7 @@ export default function WordMatch(query, item) {
         .toLowerCase()
         .split(",");
 
-    const trimmedQuery = query.trim().toLowerCase();
+    const trimmedQuery = query.replace(/\W/g, "").toLowerCase();
 
     // iterate on all chars to find potential start index
     for (let i = 0; i < itemParts.length; i++) {
