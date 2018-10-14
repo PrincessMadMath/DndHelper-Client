@@ -10,7 +10,14 @@ import SpellCasting from "./SubComponents/SpellCasting";
 import DndContainer from "./StyledComponent/DndContainer";
 import styled from "styled-components";
 
+import PropTypes from "prop-types";
+
 class Monster extends React.Component {
+    static propTypes = {
+        monster: PropTypes.object.isRequired,
+        opened: PropTypes.bool.isRequired,
+    };
+
     constructor(props) {
         super(props);
 

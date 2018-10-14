@@ -1,5 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
+import DndContainer from "../StyledComponent/DndContainer";
+import Monster from "../Monster";
 
 export default class EncounterPlayer extends PureComponent {
     static propTypes = {
@@ -24,8 +26,39 @@ export default class EncounterPlayer extends PureComponent {
 
         this.state = {
             encountersInfo: encountersInfo,
+            moreInfoParticipant: {},
         };
     }
+
+    renderParticipant = participant => {
+        return (
+            <DndContainer
+                key={participant.name}
+                onClick={() => this.handleParticipantClick(participant)}
+            >
+                {participant.name} {participant.type} {participant.initiative}
+            </DndContainer>
+        );
+    };
+
+    renderMoreInfo = () => {
+        const { moreInfoParticipant } = this.state;
+
+        if (moreInfoParticipant.type !== "monster") {
+            return null;
+        }
+
+        return (
+            <div>
+                <div>More info</div>
+                <Monster monster={moreInfoParticipant.info} opened />
+            </div>
+        );
+    };
+
+    handleParticipantClick = participant => {
+        this.setState({ moreInfoParticipant: participant });
+    };
 
     render() {
         const orderedParticipant = this.state.encountersInfo.sort((a, b) => {
@@ -38,16 +71,13 @@ export default class EncounterPlayer extends PureComponent {
             return 0;
         });
 
-        debugger;
-
         return (
             <>
-                <h3>Encounter Builder</h3>
-                {orderedParticipant.map(x => (
-                    <div key={x.name}>
-                        {x.name} {x.type} {x.initiative}
-                    </div>
-                ))}
+                <h3>Encounter Player</h3>
+                <div className="flex flex-row flex- wrap">
+                    <div>{orderedParticipant.map(x => this.renderParticipant(x))}</div>
+                    {this.renderMoreInfo()}
+                </div>
             </>
         );
     }

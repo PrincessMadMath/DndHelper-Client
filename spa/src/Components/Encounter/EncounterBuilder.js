@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import queryString from "query-string";
-import Monster from "./Monster";
+import Monster from "../Monster";
 import PropTypes from "prop-types";
 
 import styled from "styled-components";

@@ -12,7 +12,7 @@ import SpellDatabase from "./SpellDatabase";
 import MonsterSingle from "./MonsterSingle";
 import NotFound from "./NotFound";
 import { createGlobalStyle } from "styled-components";
-import EncounterManager from "./EncounterManager";
+import EncounterManager from "./Encounter/EncounterManager";
 
 // TODO: Refactor to tachyon
 const GlobalStyle = createGlobalStyle`
