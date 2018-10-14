@@ -66,13 +66,13 @@ class MonsterDatabase extends React.Component {
         const items = [];
 
         for (var key in encounterMonsters) {
-            items.push(`${key}#${encounterMonsters[key]}`);
+            items.push(`${encounterMonsters[key]}_${key}`);
         }
 
         const query = items.join();
         console.log({ query });
 
-        this.props.history.push(`/encounter/?list=${query}`);
+        this.props.history.push(`/encounter?list=${query}`);
     };
 
     render() {
@@ -81,7 +81,10 @@ class MonsterDatabase extends React.Component {
 
         return (
             <div className="relative">
-                <h3>Monster Database -  {monstersDB.length} results ({filteredMonsters.length} visible)</h3>
+                <h3>
+                    Monster Database - {monstersDB.length} results ({filteredMonsters.length}{" "}
+                    visible)
+                </h3>
                 <MonsterSelector
                     monsters={encounterMonsters}
                     onAddMonster={this.handleAddMonster}
@@ -93,7 +96,7 @@ class MonsterDatabase extends React.Component {
                     <SearchBox
                         fieldName={"name"}
                         callback={this.createMaskSetter("name_mask")}
-                        initialValue={ queryString.parse(this.props.location.search).q}
+                        initialValue={queryString.parse(this.props.location.search).q}
                         items={monstersDB.map(s => s.name)}
                     />
                     <MultiSelect
