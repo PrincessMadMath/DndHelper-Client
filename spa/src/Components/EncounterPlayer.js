@@ -38,6 +38,8 @@ export default class EncounterPlayer extends PureComponent {
             return 0;
         });
 
+        debugger;
+
         return (
             <>
                 <h3>Encounter Builder</h3>
@@ -55,7 +57,7 @@ function buildEncounterObject(players, monstersOfEncounter) {
     const playersInfo = players.map(player => {
         return {
             name: player.name,
-            initiative: player.initiative,
+            initiative: parseInt(player.initiative),
             type: "player",
             info: player,
         };
