@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import queryString from "query-string";
 import Monster from "./Monster";
+import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
@@ -13,14 +14,20 @@ const EncounterComponent = styled.div`
     flex-wrap: wrap;
 `;
 
-export default class Encounter extends PureComponent {
+export default class EncounterBuilder extends PureComponent {
+    static propTypes = {
+        queries: PropTypes.string.isRequired,
+        monstersDB: PropTypes.array.isRequired,
+        onStartEncounter: PropTypes.func.isRequired,
+    };
+
     constructor(props) {
         super(props);
 
-        const { monstersDB } = this.props;
+        const { queries, monstersDB } = this.props;
 
-        const queries = queryString.parse(this.props.location.search);
-        const list = queries.list.split(",");
+        const parsedQueries = queryString.parse(queries);
+        const list = parsedQueries.list.split(",");
         const monstersOfEncounter = list.map(info => {
             const splittedInfo = info.split("_");
             const count = splittedInfo[0];
@@ -65,11 +72,13 @@ export default class Encounter extends PureComponent {
             {
                 id: "monsterName",
                 Header: "Monster",
+                width: 200,
                 accessor: d => d.monster.name,
             },
             {
                 Header: "Count",
                 accessor: "count",
+                width: 75,
                 Cell: cellInfo => this.renderEditable(cellInfo, "monstersOfEncounter"),
             },
         ];
@@ -92,11 +101,13 @@ export default class Encounter extends PureComponent {
             {
                 Header: "Name",
                 accessor: "name",
+                width: 200,
                 Cell: cellInfo => this.renderEditable(cellInfo, "players"),
             },
             {
                 Header: "initiative",
                 accessor: "initiative",
+                width: 100,
                 Cell: cellInfo => this.renderEditable(cellInfo, "players"),
             },
             {
@@ -142,29 +153,32 @@ export default class Encounter extends PureComponent {
 
     startEncounter = () => {
         localStorage.setItem("players", JSON.stringify(this.state.players));
-        console.log("FIGHT!");
+        this.props.onStartEncounter({
+            players: this.state.players,
+            monstersOfEncounter: this.state.monstersOfEncounter,
+        });
     };
 
     render() {
         const { monstersOfEncounter, players } = this.state;
 
         return (
-            <div>
-                <h3>Encounter</h3>
-                {this.renderMonstersTable()}
-                <button onClick={this.handleAddPlayer}>Add player</button>
-                {this.renderPlayersTable()}
+            <>
+                <h3>Encounter Builder</h3>
                 <button onClick={this.startEncounter}>Start Encounter</button>
-                {/* <EncounterComponent>
-                    {monstersOfEncounter.map(function(encounterInfo) {
-                        return (
-                            <div key={encounterInfo.monster.name}>
-                                {encounterInfo.count}x{encounterInfo.monster.name}
-                            </div>
-                        );
-                    })}
-                </EncounterComponent> */}
-            </div>
+
+                <div className="flex flex-row flex-wrap">
+                    <div className="mh5">
+                        <h2>Monsters</h2>
+                        {this.renderMonstersTable()}
+                    </div>
+                    <div className="mh5">
+                        <h2>Players</h2>
+                        {this.renderPlayersTable()}
+                        <button onClick={this.handleAddPlayer}>Add player</button>
+                    </div>
+                </div>
+            </>
         );
     }
 }

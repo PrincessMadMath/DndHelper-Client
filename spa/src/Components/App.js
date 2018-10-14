@@ -11,8 +11,8 @@ import MonsterDatabase from "./MonsterDatabase";
 import SpellDatabase from "./SpellDatabase";
 import MonsterSingle from "./MonsterSingle";
 import NotFound from "./NotFound";
-import Encounter from "./Encounter";
 import { createGlobalStyle } from "styled-components";
+import EncounterManager from "./EncounterManager";
 
 // TODO: Refactor to tachyon
 const GlobalStyle = createGlobalStyle`
@@ -52,7 +52,7 @@ class App extends Component {
                     />
                     <Route
                         path="/encounter"
-                        render={props => <Encounter monstersDB={monsters} {...props} />}
+                        render={props => <EncounterManager monstersDB={monsters} {...props} />}
                     />
                     <Route
                         exact
