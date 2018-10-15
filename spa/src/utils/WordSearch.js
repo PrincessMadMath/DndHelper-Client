@@ -25,7 +25,7 @@ export default function WordMatch(query, item) {
     // iterate on all chars to find potential start index
     for (let i = 0; i < itemParts.length; i++) {
         for (let j = 0; j < itemParts[i].length; j++) {
-            if (trimmedQuery[0] === itemParts[i][j] && attempt(trimmedQuery, itemParts, i, j)) {
+            if (attempt(trimmedQuery, itemParts, i, j)) {
                 return true;
             }
         }
@@ -33,24 +33,30 @@ export default function WordMatch(query, item) {
 }
 
 function attempt(query, itemParts, startPartIndex, startCharIndex) {
-    let partIndex = startPartIndex;
-    let partCharIndex = startCharIndex;
+    if (query[0] !== itemParts[startPartIndex][startCharIndex]) {
+        return false;
+    }
 
-    // We want to match every single char in the query
-    for (let i = 0; i < query.length; i++) {
-        let char = query[i];
-        if (char === itemParts[partIndex][partCharIndex]) {
-            partCharIndex++;
-        } else {
-            // if the char didn't match or there are no more chars in the part at partIndex
-            // attempt from the start of any next part that starts with the given char
-            for (let j = partIndex + 1; j < itemParts.length; j++) {
-                if (char === itemParts[j][0] && attempt(query.slice(i), itemParts, j, 0)) {
-                    return true;
-                }
-            }
-            return false;
+    let partIndex = startPartIndex;
+    let partCharIndex = startCharIndex + 1;
+    let charIndex = 1;
+
+    while (charIndex < query.length && query[charIndex] === itemParts[partIndex][partCharIndex]) {
+        charIndex++;
+        partCharIndex++;
+    }
+
+    if (charIndex === query.length) {
+        return true;
+    }
+
+    let unmatchedQuery = query.slice(charIndex);
+    // if the char didn't match or there are no more chars in the part at partIndex
+    // attempt from the start of any next part that starts with the given char
+    for (let j = partIndex + 1; j < itemParts.length; j++) {
+        if (attempt(unmatchedQuery, itemParts, j, 0)) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
