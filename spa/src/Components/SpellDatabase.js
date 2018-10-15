@@ -58,6 +58,11 @@ export default class SpellDatabase extends React.Component {
                         items={spellsDB.map(s => s.range)}
                         callback={this.createMaskSetter("range_mask")}
                     />
+                    <MultiSelect
+                        fieldName={"level"}
+                        items={spellsDB.map(s => s.level + "")}
+                        callback={this.createMaskSetter("level")}
+                    />
                 </div>
                 {filteredSpells.map((spell, i) => (
                     <LazyLoad key={spell.name} height={113} offset={500} once={true}>

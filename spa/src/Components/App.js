@@ -13,6 +13,7 @@ import MonsterSingle from "./MonsterSingle";
 import NotFound from "./NotFound";
 import { createGlobalStyle } from "styled-components";
 import EncounterManager from "./Encounter/EncounterManager";
+import EffectShowcase from "./Surges/EffectShowcase";
 
 // TODO: Refactor to tachyon
 const GlobalStyle = createGlobalStyle`
@@ -58,6 +59,11 @@ class App extends Component {
                         exact
                         path="/spells"
                         render={props => <SpellDatabase {...props} spellsDB={spells} />}
+                    />
+                    <Route
+                        exact
+                        path="/wsg"
+                        render={() => <EffectShowcase />}
                     />
                     <Route component={NotFound} />
                 </Switch>

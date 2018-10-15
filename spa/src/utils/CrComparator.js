@@ -2,7 +2,7 @@ export default function crCompareFunc(a, b) {
     return getNumericChallengeRating(a) - getNumericChallengeRating(b);
 };
 
-function getNumericChallengeRating(cr) {
+export function getNumericChallengeRating(cr) {
     if (cr === "1/8") {
         return 0.125;
     }
