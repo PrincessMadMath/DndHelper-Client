@@ -1,13 +1,13 @@
 import getAreaForLevel from "./area";
 
-export default function getTargetForLevel(level) {
+export default function getTargetForLevel({level}) {
     if(level < 7 ){
         return (Math.round(level) + 1) + " random entities"
     }
     return "everyone "+ getAreaForLevel(level) + " around the caster"
 }
 
-export function getSingleTarget() {
+export function randomSingleTarget() {
     let rand = Math.random();
     if(rand < 0.3){
         return "the caster"

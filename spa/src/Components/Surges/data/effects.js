@@ -1,102 +1,130 @@
-import getDurationForLevel from "./duration";
-import getTargetForLevel, { getSingleTarget } from "./target";
-import monsters from "../../../data/monsters.json";
-import { getNumericChallengeRating } from "../../../utils/CrComparator";
+import randomDuration from "./duration";
+import randomTarget, { randomSingleTarget } from "./target";
+import randomMonsterEncounter, { randomMonster } from "./monsters";
+
+let surgeConfig = {
+    level: 0,
+    hasTarget: true,
+    hasCaster: true,
+};
+
+export class Parameter {
+    constructor(name, affectsLevel, valueFunction, levelWeight, levelBonus) {
+        this.name = name;
+        this.affectsLevel = affectsLevel;
+        this.valueFunction = valueFunction;
+        this.levelWeight = levelWeight;
+        this.levelBonus = levelBonus;
+    }
+}
 
 const effects = [
     {
         name: "sleep",
         description:
             "Targets fall asleep for the duration, or until shaken or slapped. If they sleep for more than 5 min, it counts as a short rest. If they sleep for more than an hour, it counts as a long rest.",
-        parameters: ["target", "Duration"],
-        paramFuncs: [getTargetForLevel, getDurationForLevel],
+        parameters: [
+            new Parameter("target", true, randomTarget, 1.1, 0),
+            new Parameter("duration", true, randomDuration, 1, 2),
+        ],
         niceness: "negative",
-        level: {
-            base: 1,
-            parameterWeights: [1, 1],
-            parameterBases: [0, -3],
-        },
+        baseLevel: 0,
     },
     {
         name: "coma",
         description:
             "Targets fall in a dreamless slumber for the duration. They cannot be woken up by any means. This counts as a long rest when they wake up.",
-        parameters: ["target", "Duration"],
-        paramFuncs: [getTargetForLevel, getDurationForLevel],
-        level: {
-            base: 0,
-            parameterWeights: [1, 0.8],
-            parameterBases: [0, 0],
-        },
+        parameters: [
+            new Parameter("target", true, randomTarget, 1, 0),
+            new Parameter("duration", true, randomDuration, 0.8, 0),
+        ],
+        baseLevel: 0,
+    },
+    {
+        name: "summon_encounter",
+        description: "Summons maybe multiple monstersnext to",
+        parameters: [
+            new Parameter("target", false, randomSingleTarget),
+            new Parameter("monster(s)", true, randomMonsterEncounter, 1, 0),
+        ],
+        baseLevel: 0,
     },
     {
         name: "summon_monster",
-        description:
-            "Summons a monsters next to",
-        parameters: ["target", "monster"],
-        paramFuncs: [getSingleTarget, getMonsterForLevel],
-        level: {
-            base: 0,
-            // add ignored params
-            parameterWeights: [1, 1],
-            parameterBases: [0, 0],
-        },
+        description: "Summons a single monsters next to",
+        parameters: [
+            new Parameter("target", false, randomSingleTarget),
+            new Parameter("monster", true, randomMonster, 1, 0),
+        ],
+        baseLevel: 0,
     },
 ];
 
-function getMonsterForLevel(level) {
-    let potentialMonster = monsters.filter(m => Math.abs(getNumericChallengeRating(m.challengeRating) - (level+0.5)*2) < 1 );
-    return potentialMonster[Math.floor(Math.random() * potentialMonster.length)].name
-}
+export function generateSurge(effect, surgeConfig) {
+    // We want to distribute available level from the surge config amongst the parameters
+    let levelAffectingParameters = effect.parameters.filter(p => p.affectsLevel);
+    let assignableLevel = surgeConfig.level - effect.baseLevel;
 
-export function generateSurgeForLevel(effect, level) {
-    let assignableLevel = level - effect.level.base;
-    // Todo: Handle negative
-    let distributions = levelDistributions(
-        assignableLevel,
-        effect.level.parameterBases,
-        effect.level.parameterWeights
-    );
-    let surge = { ...effect };
-
-    surge.paramValues = distributions.map((d, i) => effect.paramFuncs[i](d));
-
-    return surge;
-}
-
-// TODO refactor this shit
-function levelDistributions(assignableLevel, minLevelPerParam, weights) {
-    let availableLevel =
-        assignableLevel - minLevelPerParam.reduce((a, v) => (v > 0 ? a + v : a), 0);
-    if (availableLevel < 0) {
-        console.error("Cannot generate spell for this level");
-        // panic!!
+    if (assignableLevel < 0) {
+        console.log(
+            "Cannot generate surge " +
+                effect.name +
+                "for config " +
+                surgeConfig +
+                ". Available Level too low"
+        );
+        //Todo: maybe interpolate negatively only on parameters with bonii
+        return null;
     }
-    let paramCount = minLevelPerParam.length;
-    let splits = new Array(paramCount - 1);
+
+    // Distribute assignable level randomly
+    let levelParamCount = levelAffectingParameters.length;
+    let splits = new Array(levelParamCount - 1);
     for (let i = 0; i < splits.length; i++) {
-        splits[i] = Math.random() * availableLevel;
+        splits[i] = Math.random() * assignableLevel;
     }
     splits.sort();
     let last = 0;
-    let levelDistrib = new Array(paramCount);
-    for (let i = 0; i < splits.length; i++) {
-        let toAdd = minLevelPerParam[i] >= 0 ? minLevelPerParam[i] : -minLevelPerParam[i];
 
-        levelDistrib[i] = Math.max((splits[i] - last) / weights[i] + toAdd, 0);
+    let levelDistrib = new Array(levelParamCount);
+    for (let i = 0; i < splits.length; i++) {
+        let param = levelAffectingParameters[i];
+        levelDistrib[i] = (splits[i] - last) / param.levelWeight;
         last = splits[i];
     }
 
-    let toAdd =
-        minLevelPerParam[paramCount - 1] >= 0
-            ? minLevelPerParam[paramCount - 1]
-            : -minLevelPerParam[paramCount - 1];
-    levelDistrib[paramCount - 1] = Math.max(
-        (availableLevel - last) / weights[paramCount - 1] + toAdd,
-        0
-    );
+    levelDistrib[levelParamCount - 1] =
+        (assignableLevel - last) / levelAffectingParameters[levelParamCount - 1].levelWeight;
+    let surge = {
+        effect: effect,
+        config: surgeConfig,
+        values: new Array(effect.parameters.length),
+    };
+    // todo: compute target niceness
 
-    return levelDistrib;
+    let levelIndex = 0;
+    for (let i = 0; i < effect.parameters.length; i++) {
+        let paramSurgeConfig = { ...surgeConfig };
+        if (effect.parameters[i].affectsLevel) {
+            paramSurgeConfig.level = levelDistrib[levelIndex];
+            levelIndex++;
+        }
+        try {
+            surge.values[i] = effect.parameters[i].valueFunction(paramSurgeConfig);
+        } catch {
+            console.trace(
+                "Cannot generate surge " +
+                    effect.name +
+                    "for config " +
+                    surgeConfig +
+                    ". Param " +
+                    effect.parameters[i].name +
+                    " could not be generated with " +
+                    paramSurgeConfig
+            );
+        }
+    }
+    return surge;
 }
 
 export default effects;

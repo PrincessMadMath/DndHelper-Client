@@ -27,7 +27,7 @@
  * +-------+-----------------+
  */
 
-export default function getDurationForLevel(level){
+export default function getDurationForLevel({level}){
     if(level < 0.5){
         return "Until next turn"
     }
