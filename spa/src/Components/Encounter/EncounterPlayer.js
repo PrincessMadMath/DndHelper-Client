@@ -1,7 +1,8 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import DndContainer from "../StyledComponent/DndContainer";
 import Monster from "../Monster";
+import MonsterParticipant from "./MonsterParticipant";
+import PlayerParticipant from "./PlayerParticipant";
 
 export default class EncounterPlayer extends PureComponent {
     static propTypes = {
@@ -22,23 +23,70 @@ export default class EncounterPlayer extends PureComponent {
     constructor(props) {
         super(props);
 
-        const encountersInfo = buildEncounterObject(props.players, props.monstersOfEncounter);
+        const encounterParticipants = buildEncounterParticipant(
+            props.players,
+            props.monstersOfEncounter
+        );
 
         this.state = {
-            encountersInfo: encountersInfo,
+            encounterParticipants: encounterParticipants,
             moreInfoParticipant: {},
         };
     }
 
     renderParticipant = participant => {
-        return (
-            <DndContainer
-                key={participant.name}
-                onClick={() => this.handleParticipantClick(participant)}
-            >
-                {participant.name} {participant.type} {participant.initiative}
-            </DndContainer>
+        switch (participant.type) {
+            case "monster":
+                return (
+                    <MonsterParticipant
+                        key={participant.name}
+                        participant={participant}
+                        onMonsterClick={() => this.handleParticipantClick(participant)}
+                        onUpdateMonsterLife={newHP =>
+                            this.handleUpdateMonsterLife(participant.name, newHP)
+                        }
+                        onKillMonster={() => this.handleKillMonster(participant.name)}
+                    />
+                );
+            case "player":
+                return (
+                    <PlayerParticipant
+                        key={participant.name}
+                        participant={participant}
+                        onPlayerClick={() => this.handleParticipantClick(participant)}
+                    />
+                );
+
+            default:
+                return null;
+        }
+    };
+
+    handleUpdateMonsterLife = (name, newHP) => {
+        const updatedParticipants = this.state.encounterParticipants.map(participant => {
+            if (name === participant.name) {
+                return {
+                    ...participant,
+                    hp: newHP,
+                };
+            } else {
+                return participant;
+            }
+        });
+
+        this.setState({ encounterParticipants: updatedParticipants });
+    };
+
+    handleKillMonster = name => {
+        const updatedParticipants = this.state.encounterParticipants.filter(
+            participant => name !== participant.name
         );
+
+        this.setState({ encounterParticipants: updatedParticipants });
+    };
+
+    handleParticipantClick = participant => {
+        this.setState({ moreInfoParticipant: participant });
     };
 
     renderMoreInfo = () => {
@@ -56,12 +104,8 @@ export default class EncounterPlayer extends PureComponent {
         );
     };
 
-    handleParticipantClick = participant => {
-        this.setState({ moreInfoParticipant: participant });
-    };
-
     render() {
-        const orderedParticipant = this.state.encountersInfo.sort((a, b) => {
+        const orderedParticipant = this.state.encounterParticipants.sort((a, b) => {
             if (a.initiative < b.initiative) {
                 return 1;
             }
@@ -83,7 +127,7 @@ export default class EncounterPlayer extends PureComponent {
     }
 }
 
-function buildEncounterObject(players, monstersOfEncounter) {
+function buildEncounterParticipant(players, monstersOfEncounter) {
     const playersInfo = players.map(player => {
         return {
             name: player.name,
@@ -106,6 +150,7 @@ function buildEncounterObject(players, monstersOfEncounter) {
                 initiative: initiative,
                 type: "monster",
                 info: monsterInfo,
+                hp: monsterInfo.hitPoints,
             });
         }
 
