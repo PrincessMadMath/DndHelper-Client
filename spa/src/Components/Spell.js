@@ -112,27 +112,4 @@ export default class Spell extends React.Component {
 const SpellInfo = styled.div`
     overflow: hidden;
     transition: max-height 0.5s ease-in-out;
-
-    & table {
-        max-width: 100%;
-        border-collapse: collapse;
-        border: 0;
-        min-width: 11rem;
-    }
-
-    & table tbody td {
-        padding: 0.1em 1.5em;
-    }
-
-    & table tbody td {
-        text-align: left;
-    }
-
-    & table tbody tr:nth-child(odd) {
-        background: #e0e5c1;
-    }
-
-    & tabletr td:first-child {
-        text-align: center;
-    }
 `;

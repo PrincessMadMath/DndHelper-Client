@@ -6,10 +6,11 @@ export default function randomMonsterEncounter({ level }) {
     // Spell level maps to char level
     let charLevel = Math.max(level * 2 - 0.51, 0);
     // Assuming party of 4 (may want to add that in config)
-    let maxEncounterXp = randomBetween(
-        getEncounterXpPerCharacterLevel(charLevel),
-        getEncounterXpPerCharacterLevel(charLevel)
-    )*4;
+    let maxEncounterXp =
+        randomBetween(
+            getEncounterXpPerCharacterLevel(charLevel),
+            getEncounterXpPerCharacterLevel(charLevel)
+        ) * 4;
 
     let potentialMonsters = monsters.filter(
         m => monsterCrToExp[getNumericChallengeRating(m.challengeRating)] < maxEncounterXp
@@ -24,31 +25,27 @@ export default function randomMonsterEncounter({ level }) {
     return monsterList.map(m => m.name).join(", ") + " xp: " + encounterXp(monsterList);
 }
 
-export function randomMonster({level}){
+export function randomMonster({ level }) {
     // Spell level maps to char level
     let charLevel = Math.max(level * 2 - 0.51, 0);
-    // lets not do * 4
     let maxEncounterXp = randomBetween(
         getEncounterXpPerCharacterLevel(charLevel),
         getEncounterXpPerCharacterLevel(charLevel)
     );
 
     let maxMonsterXp = 0;
-    let potentialMonsters;
+    let potentialMonsters = [];
     for (let i = 0; i < monsters.length; i++) {
         let monsterXP = monsterCrToExp[getNumericChallengeRating(monsters[i].challengeRating)];
-        if(monsterXP > maxMonsterXp && monsterXP < maxEncounterXp){
+        if (monsterXP > maxMonsterXp && monsterXP < maxEncounterXp) {
             maxMonsterXp = monsterXP;
             potentialMonsters = [monsters[i]];
-        }else{
-            potentialMonsters.push(monsters[i])
+        } else if (monsterXP === maxMonsterXp) {
+            potentialMonsters.push(monsters[i]);
         }
     }
     return randomInList(potentialMonsters).name + " xp: " + maxMonsterXp;
-
 }
-
-
 
 function encounterXp(monsterList) {
     return (
@@ -107,7 +104,7 @@ function getEncounterXpPerCharacterLevel(level) {
                 (level - 20);
     } else {
         minXp = encounterXpPerCharacterLevel.easy[levelFloor];
-        maxXp = encounterXpPerCharacterLevel.medium[levelFloor + 1];
+        maxXp = encounterXpPerCharacterLevel.medium[levelFloor];
     }
 
     return lerp(level - levelFloor, minXp, maxXp);
@@ -115,6 +112,7 @@ function getEncounterXpPerCharacterLevel(level) {
 
 const encounterXpPerCharacterLevel = {
     easy: {
+        0: 5,
         1: 25,
         2: 50,
         3: 75,
@@ -137,6 +135,7 @@ const encounterXpPerCharacterLevel = {
         20: 2800,
     },
     medium: {
+        0: 15,
         1: 50,
         2: 100,
         3: 150,
@@ -159,6 +158,7 @@ const encounterXpPerCharacterLevel = {
         20: 5700,
     },
     hard: {
+        0: 25,
         1: 75,
         2: 150,
         3: 225,
@@ -181,6 +181,7 @@ const encounterXpPerCharacterLevel = {
         20: 8500,
     },
     deadly: {
+        0: 50,
         1: 100,
         2: 200,
         3: 400,

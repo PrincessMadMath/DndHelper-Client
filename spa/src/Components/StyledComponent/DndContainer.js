@@ -7,11 +7,38 @@ const DndContainer = styled.div`
     border-width: 3px 3px;
     padding: 1em;
     margin: 1em;
-    max-width: 45em;
+    max-width: ${props => props.fullscreen ? "100%" : "45em"};
     background-color: #eee5ce;
     background-image: url("/img/background.jpg");
     box-shadow: 6px 5px 9px -1px rgba(128, 131, 133, 0.4);
     transition-duration: 0.25s;
+
+    & table {
+        max-width: 100%;
+        border-collapse: collapse;
+        border: 0;
+        min-width: 11rem;
+    }
+    
+    & table thead td {
+        font-weight: bold;
+    }
+
+    & table td {
+        padding: 0.1em 1.5em;
+    }
+
+    & table td {
+        text-align: left;
+    }
+
+    & table tbody tr:nth-child(odd) {
+        background: #a3ad664d;
+    }
+
+    & tabletr td:first-child {
+        text-align: center;
+    }
 
     &:before {
         content: "";

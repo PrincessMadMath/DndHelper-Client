@@ -42,19 +42,28 @@ const effects = [
     },
     {
         name: "summon_encounter",
-        description: "Summons maybe multiple monstersnext to",
+        description: "An encounter! Multiple random monsters appear next to the target",
         parameters: [
             new Parameter("target", false, randomSingleTarget),
-            new Parameter("monster(s)", true, randomMonsterEncounter, 1, 0),
+            new Parameter("monster(s)", true, randomMonsterEncounter, 1.5, 0),
+        ],
+        baseLevel: 1,
+    },
+    {
+        name: "summon_monster",
+        description: "Summons a single monsters next to the target",
+        parameters: [
+            new Parameter("target", false, randomSingleTarget),
+            new Parameter("monster", true, randomMonster, 1, 0),
         ],
         baseLevel: 0,
     },
     {
-        name: "summon_monster",
-        description: "Summons a single monsters next to",
+        name: "illusions_monster",
+        description: "Creates the illusion of a monsters next to the target",
         parameters: [
             new Parameter("target", false, randomSingleTarget),
-            new Parameter("monster", true, randomMonster, 1, 0),
+            new Parameter("monster", true, randomMonster, 1, 2),
         ],
         baseLevel: 0,
     },
@@ -69,10 +78,8 @@ export function generateSurge(effect, surgeConfig) {
         console.log(
             "Cannot generate surge " +
                 effect.name +
-                "for config " +
-                surgeConfig +
                 ". Available Level too low"
-        );
+        , surgeConfig);
         //Todo: maybe interpolate negatively only on parameters with bonii
         return null;
     }
@@ -89,12 +96,12 @@ export function generateSurge(effect, surgeConfig) {
     let levelDistrib = new Array(levelParamCount);
     for (let i = 0; i < splits.length; i++) {
         let param = levelAffectingParameters[i];
-        levelDistrib[i] = (splits[i] - last) / param.levelWeight;
+        levelDistrib[i] = (splits[i] - last) / param.levelWeight + param.levelBonus;
         last = splits[i];
     }
 
     levelDistrib[levelParamCount - 1] =
-        (assignableLevel - last) / levelAffectingParameters[levelParamCount - 1].levelWeight;
+        (assignableLevel - last) / levelAffectingParameters[levelParamCount - 1].levelWeight + levelAffectingParameters[levelParamCount - 1].levelBonus;
     let surge = {
         effect: effect,
         config: surgeConfig,
@@ -112,16 +119,15 @@ export function generateSurge(effect, surgeConfig) {
         try {
             surge.values[i] = effect.parameters[i].valueFunction(paramSurgeConfig);
         } catch {
-            console.trace(
+            console.log(
                 "Cannot generate surge " +
                     effect.name +
-                    "for config " +
-                    surgeConfig +
+                " with config: ",surgeConfig,
                     ". Param " +
                     effect.parameters[i].name +
-                    " could not be generated with " +
-                    paramSurgeConfig
+                    " could not be generated with config ", paramSurgeConfig
             );
+            return null;
         }
     }
     return surge;

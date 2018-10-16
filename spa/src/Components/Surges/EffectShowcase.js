@@ -2,7 +2,7 @@ import React from "react";
 import effects, { generateSurge } from "./data/effects";
 import MultiSelect from "../SubComponents/MultiSelect";
 import MaskMap from "../../utils/MaskMap";
-import { forceCheck } from "react-lazyload";
+import DndContainer from "../StyledComponent/DndContainer";
 
 export default class EffectShowcase extends React.Component {
     state = {
@@ -19,14 +19,19 @@ export default class EffectShowcase extends React.Component {
         // we have to force a lazy-load check after filtering children since spells
         // can enter the viewport without scroll or resize
         this.masks.setMask(mask_name, mask);
-        this.setState(
-            { surgeByEffectByLevel: this.createSurgeByEffectByLevel(this.masks.filter(effects)) },
-            forceCheck
-        );
+        this.setState({
+            surgeByEffectByLevel: this.createSurgeByEffectByLevel(this.masks.filter(effects)),
+        });
     };
 
     createSurgeByEffectByLevel = effectList =>
         [...Array(15).keys()].map(i => effectList.map(e => generateSurge(e, { level: i })));
+
+    shuffle = () => {
+        this.setState({
+            surgeByEffectByLevel: this.createSurgeByEffectByLevel(this.masks.filter(effects)),
+        });
+    };
 
     render() {
         const { surgeByEffectByLevel } = this.state;
@@ -37,44 +42,44 @@ export default class EffectShowcase extends React.Component {
                     fieldName="Effects"
                     callback={this.createMaskSetter("effect_mask")}
                 />
+                <button onClick={this.shuffle}>Shuffle </button>
                 {surgeByEffectByLevel.length > 0 && (
-                    <table>
-                        <thead>
-                            <tr>
-                                <td> Level</td>
-                                {surgeByEffectByLevel[0].map(surgeByEffect => (
-                                    <td key={surgeByEffect.effect.name}>
-                                        {surgeByEffect.effect.name}
-                                    </td>
-                                ))}
-                            </tr>
-                            >
-                            <tr>
-                                <td> Description</td>
-                                {surgeByEffectByLevel[0].map(surgeByEffect => (
-                                    <td key={surgeByEffect.effect.name}>
-                                        {surgeByEffect.effect.description}
-                                    </td>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {surgeByEffectByLevel.map((surgeByEffect, level) => (
-                                <tr key={level}>
-                                    <td>{level}</td>
-                                    {surgeByEffect.map(surge => (
-                                        <td key={surge.effect.name}>
-                                            {surge.effect.parameters.map((param, j) => (
-                                                <div key={param.name}>
-                                                    {param.name} : {surge.values[j]}
-                                                </div>
-                                            ))}
+                    <DndContainer fullscreen >
+                        <table width="auto">
+                            <thead>
+                                <tr>
+                                    <td className="w1">Spell Level</td>
+                                    <td className="w1">Character Level</td>
+                                    {surgeByEffectByLevel[10].map(surgeByEffect => (
+                                        <td key={surgeByEffect.effect.name} className="w5">
+                                            {surgeByEffect.effect.name} <br />
+                                            <span className="fw1">
+                                                {surgeByEffect.effect.description}
+                                            </span>
                                         </td>
                                     ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {surgeByEffectByLevel.map((surgeByEffect, level) => (
+                                    <tr key={level}>
+                                        <td>{level}</td>
+                                        <td>{level * 2 - 0.5}</td>
+                                        {surgeByEffect.map((surge, i) => (
+                                            <td key={i}>
+                                                {surge !== null &&
+                                                    surge.effect.parameters.map((param, j) => (
+                                                        <div key={param.name}>
+                                                            {param.name} : {surge.values[j]}
+                                                        </div>
+                                                    ))}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </DndContainer>
                 )}
             </div>
         );
