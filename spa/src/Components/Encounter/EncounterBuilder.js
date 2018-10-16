@@ -1,18 +1,9 @@
 import React, { PureComponent } from "react";
 import queryString from "query-string";
-import Monster from "../Monster";
 import PropTypes from "prop-types";
-
-import styled from "styled-components";
 
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-
-const EncounterComponent = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-`;
 
 export default class EncounterBuilder extends PureComponent {
     static propTypes = {
@@ -160,8 +151,6 @@ export default class EncounterBuilder extends PureComponent {
     };
 
     render() {
-        const { monstersOfEncounter, players } = this.state;
-
         return (
             <>
                 <h3>Encounter Builder</h3>
