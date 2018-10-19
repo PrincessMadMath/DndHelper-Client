@@ -1,5 +1,5 @@
 import randomDuration from "./duration";
-import randomTarget, { randomSingleTarget } from "./target";
+import randomTarget, { getTargetType, randomSingleTarget } from "./target";
 import randomMonsterEncounter, { randomMonster } from "./monsters";
 
 let surgeConfig = {
@@ -18,6 +18,9 @@ export class Parameter {
     }
 }
 
+
+export const niceness = Object.freeze({good:"good", bad:"bad", goodNBad:"goodNBad", fluff: "fluff"});
+
 const effects = [
     {
         name: "sleep",
@@ -27,7 +30,7 @@ const effects = [
             new Parameter("target", true, randomTarget, 1.1, 0),
             new Parameter("duration", true, randomDuration, 1, 2),
         ],
-        niceness: "negative",
+        niceness: niceness.bad,
         baseLevel: 0,
     },
     {
@@ -36,9 +39,10 @@ const effects = [
             "Targets fall in a dreamless slumber for the duration. They cannot be woken up by any means. This counts as a long rest when they wake up.",
         parameters: [
             new Parameter("target", true, randomTarget, 1, 0),
-            new Parameter("duration", true, randomDuration, 0.8, 0),
+            new Parameter("duration", true, randomDuration, 1.2, 0),
         ],
         baseLevel: 0,
+        niceness: niceness.bad,
     },
     {
         name: "summon_encounter",
@@ -48,6 +52,7 @@ const effects = [
             new Parameter("monster(s)", true, randomMonsterEncounter, 1.5, 0),
         ],
         baseLevel: 1,
+        niceness: niceness.bad,
     },
     {
         name: "summon_monster",
@@ -56,6 +61,7 @@ const effects = [
             new Parameter("target", false, randomSingleTarget),
             new Parameter("monster", true, randomMonster, 1, 0),
         ],
+        niceness: niceness.bad,
         baseLevel: 0,
     },
     {
@@ -66,6 +72,7 @@ const effects = [
             new Parameter("monster", true, randomMonster, 1, 2),
         ],
         baseLevel: 0,
+        niceness: niceness.bad,
     },
 ];
 
@@ -111,7 +118,7 @@ export function generateSurge(effect, surgeConfig) {
 
     let levelIndex = 0;
     for (let i = 0; i < effect.parameters.length; i++) {
-        let paramSurgeConfig = { ...surgeConfig };
+        let paramSurgeConfig = { ...surgeConfig, target: getTargetType(effect.niceness, surgeConfig.niceness) };
         if (effect.parameters[i].affectsLevel) {
             paramSurgeConfig.level = levelDistrib[levelIndex];
             levelIndex++;

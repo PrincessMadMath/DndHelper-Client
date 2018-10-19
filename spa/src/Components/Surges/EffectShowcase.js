@@ -1,56 +1,68 @@
 import React from "react";
-import effects, { generateSurge } from "./data/effects";
+import effects, { generateSurge, niceness } from "./data/effects";
 import MultiSelect from "../SubComponents/MultiSelect";
-import MaskMap from "../../utils/MaskMap";
 import DndContainer from "../StyledComponent/DndContainer";
+import { randomInList } from "../../utils/utils";
 
 export default class EffectShowcase extends React.Component {
     state = {
-        surgeByEffectByLevel: [],
+        effects: [],
+        levels: [...Array(15).keys()],
+        niceness: [...Object.values(niceness)],
     };
 
-    constructor(props) {
-        super(props);
-
-        this.masks = new MaskMap(effects.length);
-    }
-
-    createMaskSetter = mask_name => mask => {
-        // we have to force a lazy-load check after filtering children since spells
-        // can enter the viewport without scroll or resize
-        this.masks.setMask(mask_name, mask);
-        this.setState({
-            surgeByEffectByLevel: this.createSurgeByEffectByLevel(this.masks.filter(effects)),
-        });
+    stateFieldSetter = field => value => {
+        this.setState(state => ({
+            ...state,
+            [field]: value,
+        }));
     };
 
-    createSurgeByEffectByLevel = effectList =>
-        [...Array(15).keys()].map(i => effectList.map(e => generateSurge(e, { level: i })));
+    createSurgeByEffectByLevel = () =>
+        this.state.levels.map(i =>
+            this.state.effects.map(effectName =>
+                generateSurge(effects.find(e => e.name === effectName), {
+                    level: i,
+                    niceness: randomInList(this.state.niceness),
+                })
+            )
+        );
 
     shuffle = () => {
-        this.setState({
-            surgeByEffectByLevel: this.createSurgeByEffectByLevel(this.masks.filter(effects)),
-        });
+        this.setState({ ...this.state });
     };
 
     render() {
-        const { surgeByEffectByLevel } = this.state;
+        const surgeByEffectByLevel = this.createSurgeByEffectByLevel();
         return (
             <div>
                 <MultiSelect
                     items={effects.map(e => e.name)}
-                    fieldName="Effects"
-                    callback={this.createMaskSetter("effect_mask")}
+                    fieldName="effects"
+                    nomasks={true}
+                    callback={this.stateFieldSetter("effects")}
+                />
+                <MultiSelect
+                    items={[...Array(15).keys()]}
+                    fieldName="levels"
+                    nomasks={true}
+                    callback={this.stateFieldSetter("levels")}
+                />
+                <MultiSelect
+                    items={[...Object.values(niceness)]}
+                    fieldName="niceness"
+                    nomasks={true}
+                    callback={this.stateFieldSetter("niceness")}
                 />
                 <button onClick={this.shuffle}>Shuffle </button>
                 {surgeByEffectByLevel.length > 0 && (
-                    <DndContainer fullscreen >
+                    <DndContainer fullscreen>
                         <table width="auto">
                             <thead>
                                 <tr>
                                     <td className="w1">Spell Level</td>
                                     <td className="w1">Character Level</td>
-                                    {surgeByEffectByLevel[10].map(surgeByEffect => (
+                                    {surgeByEffectByLevel[surgeByEffectByLevel.length-1].map(surgeByEffect => (
                                         <td key={surgeByEffect.effect.name} className="w5">
                                             {surgeByEffect.effect.name} <br />
                                             <span className="fw1">

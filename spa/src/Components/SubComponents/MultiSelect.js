@@ -8,7 +8,7 @@ export default class MultiSelect extends React.Component {
     constructor(props) {
         super(props);
 
-        let uniqueOptions = new Set(this.props.items.flat().map(v => v.trim().toLowerCase()));
+        let uniqueOptions = new Set(this.props.items.flat().map(v => typeof(v) === "string" ? v.trim().toLowerCase() : v));
         let options;
         if (this.props.compareFunc) {
             options = [...uniqueOptions].sort(this.props.compareFunc);
@@ -23,6 +23,11 @@ export default class MultiSelect extends React.Component {
 
     handleChange = selectedOptions => {
         let selectedValues = selectedOptions.map(o => o.value);
+
+        if(this.props.nomasks){
+            this.props.callback(selectedValues);
+            return;
+        }
 
         if (selectedValues.length === 0) {
             this.props.callback(new Array(this.props.items.length).fill(true));
