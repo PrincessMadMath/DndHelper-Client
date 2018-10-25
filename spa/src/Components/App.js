@@ -36,7 +36,10 @@ Modal.setAppElement("#root");
 
 class App extends Component {
     state = {
-        monsters: monsters,
+        monsters: monsters.map(x => ({
+            source: "official",
+            ...x
+        })),
     };
 
     handleUploadMonster = newMonsters => {

@@ -14,7 +14,8 @@ export default class DatabaseUploader extends PureComponent {
             // Clean monster stats
             const cleanMonster = j.map(x => ({
                 challengeRating: "X",
-                ...x
+                source: "custom",
+                ...x,
             }));
 
             this.props.onUploadMonsters(cleanMonster);

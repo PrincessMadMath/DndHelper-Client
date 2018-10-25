@@ -142,7 +142,9 @@ function buildEncounterParticipant(players, monstersOfEncounter) {
             const { monster: monsterInfo } = monsterDetails;
 
             const initiativeRoll = Math.floor(Math.random() * 20 + 1);
-            const initiativeBonus = modifierCalculator(monsterInfo.abilities.dexterity);
+            const initiativeBonus = modifierCalculator(
+                monsterInfo.abilities ? monsterInfo.abilities.dexterity : 0
+            );
             const initiative = initiativeRoll + initiativeBonus;
 
             previousValue.push({
