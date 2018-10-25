@@ -11,12 +11,13 @@ const FightInfo = ({ monster }) => {
             </span>
             <br />
             <span>
-                <b>Hit Points:</b> {monster.hitPoints} ({monster.hitDice})
+                <b>Hit Points:</b> {monster.hitPoints} {monster.hitDice && (<span>({monster.hitDice})</span>)}
             </span>
             <br />
-            <span>
-                <b>Speed:</b> {monster.speed}
-            </span>
+            {monster.speed && (<span>
+                 <b>Speed:</b> {monster.speed}
+            </span>)}
+            
             <br />
         </div>
     );
