@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DndContainer from "../StyledComponent/DndContainer";
+import mathjs from "mathjs";
 
 export default class MonsterParticipant extends Component {
     static propTypes = {
@@ -28,6 +29,16 @@ export default class MonsterParticipant extends Component {
         event.stopPropagation();
     };
 
+    onLifeKeyPressed = event => {
+        if (event.key === "Enter") {
+            this.onLifeUpdate(event);
+            try {
+                const newLife = mathjs.eval(event.target.value);
+                this.props.onUpdateMonsterLife(newLife);
+            } catch (error) {}
+        }
+    };
+
     render() {
         const { name, initiative, hp, info } = this.props.participant;
 
@@ -48,8 +59,9 @@ export default class MonsterParticipant extends Component {
                                 <span>HP: </span>
                                 <input
                                     className="w3"
-                                    type="number"
+                                    type="text"
                                     value={hp}
+                                    onKeyPress={this.onLifeKeyPressed}
                                     onChange={this.onLifeUpdate}
                                     onClick={this.preventPropagation}
                                 />
