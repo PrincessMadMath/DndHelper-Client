@@ -7,6 +7,8 @@ export default class DatabaseUploader extends PureComponent {
     onDrop = files => {
         const reader = new FileReader();
 
+        const sourceName = files[0].name.replace(".json", "");
+
         reader.onload = e => {
             const text = reader.result;
             const j = JSON.parse(text);
@@ -14,7 +16,7 @@ export default class DatabaseUploader extends PureComponent {
             // Clean monster stats
             const cleanMonster = j.map(x => ({
                 challengeRating: "X",
-                source: "custom",
+                source: sourceName,
                 ...x,
             }));
 
