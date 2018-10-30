@@ -1,6 +1,7 @@
 import randomDuration from "./duration";
 import randomTarget, { getTargetType, randomSingleTarget } from "./target";
 import randomMonsterEncounter, { randomMonster } from "./monsters";
+import randomSpell from "./spells"
 
 let surgeConfig = {
     level: 0,
@@ -73,6 +74,16 @@ const effects = [
         ],
         baseLevel: 0,
         niceness: niceness.bad,
+    },
+    {
+        name: "cast_spell",
+        description: "Target is infused with magical energy that takes form of the given spell. Target must immediately cast that spell.",
+        parameters: [
+            new Parameter("caster", false, randomSingleTarget),
+            new Parameter("spell", true, randomSpell, 1, 0),
+        ],
+        baseLevel: 0,
+        niceness: niceness.good,
     },
 ];
 

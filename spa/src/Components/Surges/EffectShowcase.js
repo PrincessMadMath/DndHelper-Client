@@ -19,14 +19,14 @@ export default class EffectShowcase extends React.Component {
     };
 
     createSurgeByEffectByLevel = () =>
-        this.state.levels.map(i =>
-            this.state.effects.map(effectName =>
-                generateSurge(effects.find(e => e.name === effectName), {
+        this.state.levels.map(i => {
+            return this.state.effects.map(effectName => {
+                return generateSurge(effects.find(e => e.name === effectName), {
                     level: i,
                     niceness: randomInList(this.state.niceness),
-                })
-            )
-        );
+                });
+            });
+        });
 
     shuffle = () => {
         this.setState({ ...this.state });
@@ -62,14 +62,16 @@ export default class EffectShowcase extends React.Component {
                                 <tr>
                                     <td className="w1">Spell Level</td>
                                     <td className="w1">Character Level</td>
-                                    {surgeByEffectByLevel[surgeByEffectByLevel.length-1].map(surgeByEffect => (
-                                        <td key={surgeByEffect.effect.name} className="w5">
-                                            {surgeByEffect.effect.name} <br />
-                                            <span className="fw1">
-                                                {surgeByEffect.effect.description}
-                                            </span>
-                                        </td>
-                                    ))}
+                                    {surgeByEffectByLevel
+                                        .filter(s => s !== null)[0]
+                                        .map(surgeByEffect => (
+                                            <td key={surgeByEffect.effect.name} className="w5">
+                                                {surgeByEffect.effect.name} <br />
+                                                <span className="fw1">
+                                                    {surgeByEffect.effect.description}
+                                                </span>
+                                            </td>
+                                        ))}
                                 </tr>
                             </thead>
                             <tbody>
