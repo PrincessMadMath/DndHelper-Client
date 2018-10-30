@@ -4,26 +4,36 @@ import PropTypes from "prop-types";
 import Filter from "../StyledComponent/Filter";
 import { throttle } from "throttle-debounce";
 import WordMatch from "../../utils/WordSearch";
+import queryString from "query-string";
 
 export default class SearchBox extends React.Component {
     static propTypes = {
         items: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
         fieldName: PropTypes.string.isRequired,
-        initialValue: PropTypes.string,
     };
 
     constructor(props) {
         super(props);
 
-        if (this.props.initialValue) {
-            this.callback(this.props.initialValue);
+        if (this.props.urlKey) {
+            this.initialValue = queryString.parse(window.location.search)[this.props.urlKey];
+            if (this.initialValue) {
+                this.callback(this.initialValue);
+            }
         }
     }
 
     callback = throttle(250, term => {
         this.props.callback(this.props.items.map(f => WordMatch(term, f)));
-        // Todo: find a better place for this eventually
-        window.history.replaceState(null,null, "?q="+term);
+        if (this.props.urlKey) {
+            let currentQueryString = queryString.parse(window.location.search);
+            currentQueryString[this.props.urlKey] = term;
+            window.history.replaceState(
+                null,
+                null,
+                "?" + queryString.stringify(currentQueryString)
+            );
+        }
     });
 
     handleChange = event => {
@@ -36,7 +46,7 @@ export default class SearchBox extends React.Component {
                 <input
                     className="css-1hwfws3 bw0 bg-transparent h-100"
                     type="text"
-                    defaultValue={this.props.initialValue}
+                    defaultValue={this.initialValue}
                     onChange={this.handleChange}
                     autoFocus
                     placeholder={"Search by " + this.props.fieldName + ": "}

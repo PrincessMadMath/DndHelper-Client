@@ -1,7 +1,7 @@
 import randomDuration from "./duration";
 import randomTarget, { getTargetType, randomSingleTarget } from "./target";
 import randomMonsterEncounter, { randomMonster } from "./monsters";
-import randomSpell from "./spells"
+import randomSpell from "./spells";
 
 let surgeConfig = {
     level: 0,
@@ -19,8 +19,12 @@ export class Parameter {
     }
 }
 
-
-export const niceness = Object.freeze({good:"good", bad:"bad", goodNBad:"goodNBad", fluff: "fluff"});
+export const niceness = Object.freeze({
+    good: "good",
+    bad: "bad",
+    goodNBad: "goodNBad",
+    fluff: "fluff",
+});
 
 const effects = [
     {
@@ -77,7 +81,8 @@ const effects = [
     },
     {
         name: "cast_spell",
-        description: "Target is infused with magical energy that takes form of the given spell. Target must immediately cast that spell.",
+        description:
+            "Target is infused with magical energy that takes form of the given spell. Target must immediately cast that spell.",
         parameters: [
             new Parameter("caster", false, randomSingleTarget),
             new Parameter("spell", true, randomSpell, 1, 0),
@@ -94,10 +99,9 @@ export function generateSurge(effect, surgeConfig) {
 
     if (assignableLevel < 0) {
         console.log(
-            "Cannot generate surge " +
-                effect.name +
-                ". Available Level too low"
-        , surgeConfig);
+            "Cannot generate surge " + effect.name + ". Available Level too low",
+            surgeConfig
+        );
         //Todo: maybe interpolate negatively only on parameters with bonii
         return null;
     }
@@ -119,7 +123,8 @@ export function generateSurge(effect, surgeConfig) {
     }
 
     levelDistrib[levelParamCount - 1] =
-        (assignableLevel - last) / levelAffectingParameters[levelParamCount - 1].levelWeight + levelAffectingParameters[levelParamCount - 1].levelBonus;
+        (assignableLevel - last) / levelAffectingParameters[levelParamCount - 1].levelWeight +
+        levelAffectingParameters[levelParamCount - 1].levelBonus;
     let surge = {
         effect: effect,
         config: surgeConfig,
@@ -129,7 +134,10 @@ export function generateSurge(effect, surgeConfig) {
 
     let levelIndex = 0;
     for (let i = 0; i < effect.parameters.length; i++) {
-        let paramSurgeConfig = { ...surgeConfig, target: getTargetType(effect.niceness, surgeConfig.niceness) };
+        let paramSurgeConfig = {
+            ...surgeConfig,
+            target: getTargetType(effect.niceness, surgeConfig.niceness),
+        };
         if (effect.parameters[i].affectsLevel) {
             paramSurgeConfig.level = levelDistrib[levelIndex];
             levelIndex++;
@@ -138,12 +146,10 @@ export function generateSurge(effect, surgeConfig) {
             surge.values[i] = effect.parameters[i].valueFunction(paramSurgeConfig);
         } catch {
             console.log(
-                "Cannot generate surge " +
-                    effect.name +
-                " with config: ",surgeConfig,
-                    ". Param " +
-                    effect.parameters[i].name +
-                    " could not be generated with config ", paramSurgeConfig
+                "Cannot generate surge " + effect.name + " with config: ",
+                surgeConfig,
+                ". Param " + effect.parameters[i].name + " could not be generated with config ",
+                paramSurgeConfig
             );
             return null;
         }

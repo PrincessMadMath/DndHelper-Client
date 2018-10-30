@@ -5,7 +5,6 @@ import Spell from "./Spell";
 import SearchBox from "./SubComponents/SearchBox";
 import MultiSelect from "./SubComponents/MultiSelect";
 import MaskMap from "../utils/MaskMap";
-import queryString from "query-string";
 
 export default class SpellDatabase extends React.Component {
     constructor(props) {
@@ -39,27 +38,31 @@ export default class SpellDatabase extends React.Component {
                 <div className="flex flex-wrap">
                     <SearchBox
                         fieldName={"name"}
-                        initialValue={ queryString.parse(this.props.location.search).q}
+		        urlKey="q"
                         callback={this.createMaskSetter("name_mask")}
                         items={spellsDB.map(s => s.name)}
                     />
                     <MultiSelect
                         fieldName={"school"}
+			urlKey="s"
                         items={spellsDB.map(s => s.school)}
                         callback={this.createMaskSetter("school_mask")}
                     />
                     <MultiSelect
                         fieldName={"class"}
+			urlKey="c"
                         items={spellsDB.map(s => s.class)}
                         callback={this.createMaskSetter("class_mask")}
                     />
                     <MultiSelect
                         fieldName={"range"}
+			urlKey="r"
                         items={spellsDB.map(s => s.range)}
                         callback={this.createMaskSetter("range_mask")}
                     />
                     <MultiSelect
                         fieldName={"level"}
+			urlKey="l"
                         items={spellsDB.map(s => s.level + "")}
                         callback={this.createMaskSetter("level")}
                     />

@@ -40,18 +40,21 @@ export default class EffectShowcase extends React.Component {
                     items={effects.map(e => e.name)}
                     fieldName="effects"
                     nomasks={true}
+                    urlKey="e"
                     callback={this.stateFieldSetter("effects")}
                 />
                 <MultiSelect
                     items={[...Array(15).keys()]}
                     fieldName="levels"
                     nomasks={true}
+                    urlKey="l"
                     callback={this.stateFieldSetter("levels")}
                 />
                 <MultiSelect
                     items={[...Object.values(niceness)]}
                     fieldName="niceness"
                     nomasks={true}
+                    urlKey="n"
                     callback={this.stateFieldSetter("niceness")}
                 />
                 <button onClick={this.shuffle}>Shuffle </button>
@@ -62,14 +65,12 @@ export default class EffectShowcase extends React.Component {
                                 <tr>
                                     <td className="w1">Spell Level</td>
                                     <td className="w1">Character Level</td>
-                                    {surgeByEffectByLevel
-                                        .filter(s => s !== null)[0]
-                                        .map(surgeByEffect => (
-                                            <td key={surgeByEffect.effect.name} className="w5">
-                                                {surgeByEffect.effect.name} <br />
-                                                <span className="fw1">
-                                                    {surgeByEffect.effect.description}
-                                                </span>
+                                    {this.state.effects
+                                        .map(e => effects.find(ef => ef.name === e))
+                                        .map(effect => (
+                                            <td key={effect.name} className="w5">
+                                                {effect.name} <br />
+                                                <span className="fw1">{effect.description}</span>
                                             </td>
                                         ))}
                                 </tr>
