@@ -105,6 +105,11 @@ class MonsterDatabase extends React.Component {
                         compareFunc={CrComparator}
                         callback={this.createMaskSetter("cr_mask")}
                     />
+                    <MultiSelect
+                        fieldName="SOURCE"
+                        items={monstersDB.map(m => m.source)}
+                        callback={this.createMaskSetter("source_mask")}
+                    />
                 </div>
                 <MonsterList
                     visibleMonsters={filteredMonsters}

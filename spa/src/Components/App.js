@@ -14,6 +14,7 @@ import NotFound from "./NotFound";
 import { createGlobalStyle } from "styled-components";
 import EncounterManager from "./Encounter/EncounterManager";
 import EffectShowcase from "./Surges/EffectShowcase";
+import DatabaseUploader from "./DatabaseUploader";
 
 // TODO: Refactor to tachyon
 const GlobalStyle = createGlobalStyle`
@@ -35,6 +36,20 @@ export const DBContext = createContext({
 Modal.setAppElement("#root");
 
 class App extends Component {
+    state = {
+        monsters: monsters.map(x => ({
+            source: "official",
+            ...x
+        })),
+    };
+
+    handleUploadMonster = newMonsters => {
+        const updatedMonsterse = [...this.state.monsters, ...newMonsters];
+        this.setState({
+            monsters: updatedMonsterse,
+        });
+    };
+
     render() {
         return (
             <div className="App">
@@ -45,15 +60,15 @@ class App extends Component {
                     <Route
                         exact
                         path="/monsters"
-                        render={props => <MonsterDatabase monstersDB={monsters} {...props} />}
+                        render={props => <MonsterDatabase monstersDB={this.state.monsters} {...props} />}
                     />
                     <Route
                         path="/monsters/:monsterId"
-                        render={props => <MonsterSingle monstersDB={monsters} {...props} />}
+                        render={props => <MonsterSingle monstersDB={this.state.monsters} {...props} />}
                     />
                     <Route
                         path="/encounter"
-                        render={props => <EncounterManager monstersDB={monsters} {...props} />}
+                        render={props => <EncounterManager monstersDB={this.state.monsters} {...props} />}
                     />
                     <Route
                         exact
@@ -64,6 +79,13 @@ class App extends Component {
                         exact
                         path="/wsg"
                         render={() => <EffectShowcase />}
+                    />
+                    <Route
+                        exact
+                        path="/uploader"
+                        render={props => (
+                            <DatabaseUploader onUploadMonsters={this.handleUploadMonster} />
+                        )}
                     />
                     <Route component={NotFound} />
                 </Switch>
