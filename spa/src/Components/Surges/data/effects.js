@@ -32,7 +32,7 @@ const effects = [
         description:
             "Targets fall asleep for the duration, or until shaken or slapped. If they sleep for more than 5 min, it counts as a short rest. If they sleep for more than an hour, it counts as a long rest.",
         parameters: [
-            new Parameter("target", true, randomTarget, 1.1, 0),
+            new Parameter("target", true, randomTarget, 0.95, 0),
             new Parameter("duration", true, randomDuration, 1, 2),
         ],
         niceness: niceness.bad,
@@ -88,6 +88,28 @@ const effects = [
             new Parameter("spell", true, randomSpell, 1, 0),
         ],
         baseLevel: 0,
+        niceness: niceness.good,
+    },
+    {
+        name: "heal",
+        description:
+            "Target heals for Amount of HP",
+        parameters: [
+            new Parameter("target", false, randomSingleTarget),
+            new Parameter("amount", true, ({level}) => Math.round(level), 1, 0),
+        ],
+        baseLevel: 0,
+        niceness: niceness.good,
+    },
+    {
+        name: "mass_heal",
+        description:
+            "N characters in 30 ft around the target heal for amount d8",
+        parameters: [
+            new Parameter("N", true, ({level}) => Math.round(level), 1, 4),
+            new Parameter("amount", true, ({level}) => Math.round(level), 1, 3),
+        ],
+        baseLevel: 5,
         niceness: niceness.good,
     },
 ];
