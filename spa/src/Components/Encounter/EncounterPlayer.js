@@ -4,6 +4,7 @@ import Monster from "../Monster";
 import MonsterParticipant from "./MonsterParticipant";
 import PlayerParticipant from "./PlayerParticipant";
 import Participant from "./Participant";
+import MonsterAdder from "./MonsterAdder";
 
 export default class EncounterPlayer extends PureComponent {
     static propTypes = {
@@ -153,10 +154,28 @@ export default class EncounterPlayer extends PureComponent {
         );
     };
 
+    handleAddMonster = monsterInfo => {
+        const { encounterParticipants } = this.state;
+
+        const newParticipants = [
+            ...encounterParticipants,
+            {
+                name: monsterInfo.name + `- late adding`,
+                initiative: 0,
+                type: "monster",
+                info: monsterInfo,
+                hp: monsterInfo.hitPoints,
+            },
+        ];
+
+        this.setState({ encounterParticipants: newParticipants });
+    };
+
     render() {
         return (
             <>
                 <h3>Encounter Player</h3>
+                <MonsterAdder onAddMonster={this.handleAddMonster} />
                 <div className="flex flex-row flex- wrap">
                     <div>
                         {this.state.encounterParticipants.map(x => this.renderParticipant(x))}
