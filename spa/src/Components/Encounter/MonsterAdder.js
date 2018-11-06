@@ -3,12 +3,6 @@ import PropTypes from "prop-types";
 import Select from "react-select";
 import { DBContext } from "../App";
 
-const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-];
-
 export default class MonsterAdder extends Component {
     static propTypes = {
         onAddMonster: PropTypes.func.isRequired,

@@ -11,6 +11,11 @@ const AddButton = styled.div`
     top: 10px;
 `;
 
+const HideOnSmall = styled.div`
+    @media screen and (max-width: 1024px) {
+        display: none;
+    }
+`;
 export default class MonsterList extends Component {
     static propTypes = {
         visibleMonsters: PropTypes.array.isRequired,
@@ -33,9 +38,13 @@ export default class MonsterList extends Component {
                     return (
                         <LazyLoad key={monster.name} height={88} once={true}>
                             <Monster monster={monster} opened={visibleMonsters.length === 1}>
-                                <AddButton>
-                                    <button onClick={() => onAddMonster(monster.name)}>+</button>
-                                </AddButton>
+                                <HideOnSmall>
+                                    <AddButton>
+                                        <button onClick={() => onAddMonster(monster.name)}>
+                                            +
+                                        </button>
+                                    </AddButton>
+                                </HideOnSmall>
                             </Monster>
                         </LazyLoad>
                     );
