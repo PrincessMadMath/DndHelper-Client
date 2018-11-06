@@ -18,18 +18,22 @@ export default class EncounterBuilder extends PureComponent {
 
         const { queries, monstersDB } = this.props;
 
-        const parsedQueries = queryString.parse(queries);
-        const list = parsedQueries.list.split(",");
-        const monstersOfEncounter = list.map(info => {
-            const splittedInfo = info.split("_");
-            const count = splittedInfo[0];
-            const name = splittedInfo[1];
+        let monstersOfEncounter = [];
 
-            return {
-                count: count,
-                monster: monstersDB.find(x => x.name === name),
-            };
-        });
+        if (queries) {
+            const parsedQueries = queryString.parse(queries);
+            const list = parsedQueries.list.split(",");
+            monstersOfEncounter = list.map(info => {
+                const splittedInfo = info.split("_");
+                const count = splittedInfo[0];
+                const name = splittedInfo[1];
+
+                return {
+                    count: count,
+                    monster: monstersDB.find(x => x.name === name),
+                };
+            });
+        }
 
         const players = JSON.parse(localStorage.getItem("players") || "[]");
 

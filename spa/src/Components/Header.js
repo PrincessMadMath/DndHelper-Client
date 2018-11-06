@@ -16,6 +16,9 @@ class Header extends React.Component {
                     <SectionLink as={Link} to="/spells">
                         Spell Database
                     </SectionLink>
+                    <SectionLink as={Link} to="/encounter">
+                        Encounter Builder
+                    </SectionLink>
                     <SectionLink as={Link} to="/uploader">
                         Uploader
                     </SectionLink>
