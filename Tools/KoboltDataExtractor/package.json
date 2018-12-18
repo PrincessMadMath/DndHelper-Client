@@ -1,0 +1,15 @@
+{
+  "name": "koboltdataextractor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "parser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fast-xml-parser": "^3.12.10",
+    "he": "^1.2.0"
+  }
+}

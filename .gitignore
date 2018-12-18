@@ -1,2 +1,3 @@
 .idea/**
 *.iml
+Tools/KoboltDataExtractor/node_modules/
