@@ -2,5 +2,6 @@
     "python.pythonPath": "C:\\Users\\Math-Surface\\AppData\\Local\\Programs\\Python\\Python36\\python.exe",
     "prettier.tabWidth": 4,
     "prettier.trailingComma": "es5",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "javascript.implicitProjectConfig.checkJs": true
 }

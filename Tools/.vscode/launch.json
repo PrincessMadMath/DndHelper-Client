@@ -9,7 +9,10 @@
             "request": "launch",
             "name": "Debug Kobolt Datasource",
             "program": "${workspaceFolder}/KoboltDataExtractor/parser.js",
-            "args": ["KoboltDataExtractor/core.xml", "KoboltDataExtractor"],
+            "args": [
+                "KoboltDataExtractor/data/tome_of_beasts.xml",
+                "KoboltDataExtractor/output"
+            ]
         }
     ]
 }
