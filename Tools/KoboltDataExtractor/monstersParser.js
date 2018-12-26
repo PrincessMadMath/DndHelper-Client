@@ -1,7 +1,7 @@
 function parseMonsters(monstersToParse) {
     return monstersToParse.map(x => {
         return {
-            challengeRating: x.cr,
+            challengeRating: `${x.cr}`,
             name: x.name,
             size: parseSize(x.size),
             type: parseType(x.type),
@@ -26,15 +26,15 @@ function parseMonsters(monstersToParse) {
                 x.conditionImmune
             ),
             features: parseFeatures(x.trait),
-            spellCasting: parseSpellCasting(x.trait),
-            innateSpellcasting: parseInnateSpellCasting(x.trait),
+            spellcasting: parseSpellcasting(x.trait),
+            innateSpellcasting: parseInnateSpellcasting(x.trait),
             actions: parseActions(x.action),
             legendaryActions: parseLegendaryActions(x.legendary),
             lairActions: parseLairActions(x.action),
             senses: x.senses,
             languages: x.languages,
             environment: x.environment,
-            source: parseSource(x.trait),
+            sources: parseSource(x.trait),
         };
     });
 }
@@ -192,7 +192,7 @@ function parseFeatures(trait) {
         });
 }
 
-function parseSpellCasting(trait) {
+function parseSpellcasting(trait) {
     if (!Array.isArray(trait)) {
         return null;
     }
@@ -244,7 +244,7 @@ function parseSpellCasting(trait) {
     };
 }
 
-function parseInnateSpellCasting(trait) {
+function parseInnateSpellcasting(trait) {
     if (!Array.isArray(trait)) {
         return null;
     }
@@ -306,7 +306,7 @@ function parseInnateSpellCasting(trait) {
 
 function parseActions(action) {
     if (action === undefined) {
-        return [];
+        return null;
     }
 
     if (!Array.isArray(action)) {
@@ -423,7 +423,7 @@ function parseSource(trait) {
         }
 
         return {
-            name: sourceRegexResult[1].trim(),
+            name: sourceRegexResult[1].replace(".", "").trim(),
             page: sourceRegexResult[2].trim(),
         };
     });

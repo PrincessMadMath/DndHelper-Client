@@ -115,7 +115,7 @@ class MonsterDatabase extends React.Component {
                     />
                     <MultiSelect
                         fieldName="SOURCE"
-                        items={monstersDB.map(m => m.source)}
+                        items={monstersDB.map(m => m.sources.map(y => y.name))}
                         callback={this.createMaskSetter("source_mask")}
                     />
                 </div>

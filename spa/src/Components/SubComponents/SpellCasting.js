@@ -3,14 +3,14 @@ import React from "react";
 
 import SpellModal from "./SpellModal";
 
-const SpellCasting = ({ monsterSpells }) => {
+const SpellCasting = ({ title, monsterSpells }) => {
     if (monsterSpells == null) {
         return <div />;
     }
 
     return (
         <div>
-            <h2 className="mb0">Spell Casting</h2>
+            <h2 className="mb0">{title}</h2>
             <hr />
             <p>{monsterSpells.desc}</p>
             {monsterSpells.details.map(x => (

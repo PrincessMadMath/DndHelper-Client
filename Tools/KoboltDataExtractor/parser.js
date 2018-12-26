@@ -5,25 +5,31 @@ const he = require("he");
 const parseSpells = require("./spellsParser");
 const parseMonsters = require("./monstersParser");
 
-const fromPath = process.argv[2];
+const fromPath = JSON.parse(process.argv[2]);
 const outputFolder = process.argv[3];
 
-const fileName = fromPath.replace(/^.*[\\\/]/, "").split(".")[0];
+let spells = [];
+let monsters = [];
 
-fs.readFile(fromPath, function(err, data) {
+fromPath.forEach(path => {
+    const data = fs.readFileSync(path);
+
     const text = data.toString();
     var jsonObj = parser.parse(text);
 
     if (jsonObj.compendium.spell !== undefined) {
         const parsedSpells = parseSpells(jsonObj.compendium.spell);
-        saveFile(`${fileName}_spells_output.json`, parsedSpells);
+        spells = [...spells, ...parsedSpells];
     }
 
     if (jsonObj.compendium.monster !== undefined) {
         const parsedMonsters = parseMonsters(jsonObj.compendium.monster);
-        saveFile(`${fileName}_monsters_output.json`, parsedMonsters);
+        monsters = [...monsters, ...parsedMonsters];
     }
 });
+
+saveFile(`spells.json`, spells);
+saveFile(`monsters.json`, monsters);
 
 fs.mkdir(outputFolder, { recursive: true }, err => {});
 

@@ -17,7 +17,7 @@ function parseSpells(spellsToParse) {
                 range: x.range,
                 canBeRitual: x.ritual === "YES" ? true : false,
                 duration: x.duration,
-                component: parseComponent(x.components, x.duration),
+                components: parseComponent(x.components, x.duration),
                 description: parseDescription(x.text),
                 higherLevel: parseHigherLevel(x.text),
                 sources: parseSource(x.text),
