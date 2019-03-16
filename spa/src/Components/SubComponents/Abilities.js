@@ -31,6 +31,10 @@ const Ability = ({ name, value }) => {
 };
 
 const Abilities = ({ abilities }) => {
+     if(!abilities){
+         return null;
+     }
+
     return (
         <div>
             <hr />

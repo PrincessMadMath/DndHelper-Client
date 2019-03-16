@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import MonsterAdder from "./MonsterAdder";
 
 export default class EncounterBuilder extends PureComponent {
     static propTypes = {
@@ -17,24 +18,29 @@ export default class EncounterBuilder extends PureComponent {
 
         const { queries, monstersDB } = this.props;
 
-        const parsedQueries = queryString.parse(queries);
-        const list = parsedQueries.list.split(",");
-        const monstersOfEncounter = list.map(info => {
-            const splittedInfo = info.split("_");
-            const count = splittedInfo[0];
-            const name = splittedInfo[1];
+        let monstersOfEncounter = [];
 
-            return {
-                count: count,
-                monster: monstersDB.find(x => x.name === name),
-            };
-        });
+        if (queries) {
+            const parsedQueries = queryString.parse(queries);
+            const list = parsedQueries.list.split(",");
+            monstersOfEncounter = list.map(info => {
+                const splittedInfo = info.split("_");
+                const count = splittedInfo[0];
+                const name = splittedInfo[1];
+
+                return {
+                    count: count,
+                    monster: monstersDB.find(x => x.name === name),
+                };
+            });
+        }
 
         const players = JSON.parse(localStorage.getItem("players") || "[]");
 
         this.state = {
             monstersOfEncounter: monstersOfEncounter,
             players: players,
+            selectedMonsterOption: null,
         };
     }
 
@@ -123,6 +129,34 @@ export default class EncounterBuilder extends PureComponent {
         );
     };
 
+    handleAddMonster = monsterInfo => {
+        const { monstersOfEncounter } = this.state;
+
+        let isMonsterInEncounter = false;
+        let newMonsters = monstersOfEncounter.map(x => {
+            if (x.monster.name === monsterInfo.name) {
+                isMonsterInEncounter = true;
+                return {
+                    ...x,
+                    count: x.count + 1,
+                };
+            }
+            return x;
+        });
+
+        if (!isMonsterInEncounter) {
+            newMonsters = [
+                ...newMonsters,
+                {
+                    count: 1,
+                    monster: monsterInfo,
+                },
+            ];
+        }
+
+        this.setState({ monstersOfEncounter: newMonsters });
+    };
+
     handleAddPlayer = () => {
         const { players } = this.state;
         const newPlayers = [...players];
@@ -150,6 +184,26 @@ export default class EncounterBuilder extends PureComponent {
         });
     };
 
+    onPrintNewUrl = () => {
+        const { monstersOfEncounter } = this.state;
+
+        const items = [];
+
+        monstersOfEncounter.forEach(monster => {
+            items.push(`${monster.count}_${monster.monster.name}`);
+        });
+
+        const query = items.join();
+
+        const baseUrl =
+            window.location.protocol +
+            "//" +
+            window.location.hostname +
+            (window.location.port ? ":" + window.location.port : "");
+        const url = `${baseUrl}/encounter?list=${query}`;
+        console.log(url);
+    };
+
     render() {
         return (
             <>
@@ -160,12 +214,14 @@ export default class EncounterBuilder extends PureComponent {
                     <div className="mh5">
                         <h2>Monsters</h2>
                         {this.renderMonstersTable()}
+                        <MonsterAdder onAddMonster={this.handleAddMonster} />
                     </div>
                     <div className="mh5">
                         <h2>Players</h2>
                         {this.renderPlayersTable()}
                         <button onClick={this.handleAddPlayer}>Add player</button>
                     </div>
+                    <button onClick={this.onPrintNewUrl}>Print URL in console</button>
                 </div>
             </>
         );

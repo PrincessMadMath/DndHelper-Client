@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import Monster from "../Monster";
 import MonsterParticipant from "./MonsterParticipant";
 import PlayerParticipant from "./PlayerParticipant";
+import Participant from "./Participant";
+import MonsterAdder from "./MonsterAdder";
 
 export default class EncounterPlayer extends PureComponent {
     static propTypes = {
@@ -28,8 +30,18 @@ export default class EncounterPlayer extends PureComponent {
             props.monstersOfEncounter
         );
 
+        const orderedParticipant = encounterParticipants.sort((a, b) => {
+            if (a.initiative < b.initiative) {
+                return 1;
+            }
+            if (a.initiative > b.initiative) {
+                return -1;
+            }
+            return 0;
+        });
+
         this.state = {
-            encounterParticipants: encounterParticipants,
+            encounterParticipants: orderedParticipant,
             moreInfoParticipant: {},
         };
     }
@@ -38,23 +50,33 @@ export default class EncounterPlayer extends PureComponent {
         switch (participant.type) {
             case "monster":
                 return (
-                    <MonsterParticipant
-                        key={participant.name}
-                        participant={participant}
-                        onMonsterClick={() => this.handleParticipantClick(participant)}
-                        onUpdateMonsterLife={newHP =>
-                            this.handleUpdateMonsterLife(participant.name, newHP)
-                        }
-                        onKillMonster={() => this.handleKillMonster(participant.name)}
-                    />
+                    <Participant
+                        onUpPosition={() => this.handleUpParticipantPosition(participant)}
+                        onDownPosition={() => this.handleDownParticipantPosition(participant)}
+                    >
+                        <MonsterParticipant
+                            key={participant.name}
+                            participant={participant}
+                            onMonsterClick={() => this.handleParticipantClick(participant)}
+                            onUpdateMonsterLife={newHP =>
+                                this.handleUpdateMonsterLife(participant.name, newHP)
+                            }
+                            onKillMonster={() => this.handleKillMonster(participant.name)}
+                        />
+                    </Participant>
                 );
             case "player":
                 return (
-                    <PlayerParticipant
-                        key={participant.name}
-                        participant={participant}
-                        onPlayerClick={() => this.handleParticipantClick(participant)}
-                    />
+                    <Participant
+                        onUpPosition={() => this.handleUpParticipantPosition(participant)}
+                        onDownPosition={() => this.handleDownParticipantPosition(participant)}
+                    >
+                        <PlayerParticipant
+                            key={participant.name}
+                            participant={participant}
+                            onPlayerClick={() => this.handleParticipantClick(participant)}
+                        />
+                    </Participant>
                 );
 
             default:
@@ -85,6 +107,34 @@ export default class EncounterPlayer extends PureComponent {
         this.setState({ encounterParticipants: updatedParticipants });
     };
 
+    handleUpParticipantPosition = participant => {
+        const participantIndex = this.state.encounterParticipants.findIndex(
+            x => x.name === participant.name
+        );
+        if (participantIndex === 0) {
+            return;
+        }
+        const updatedParticipants = [...this.state.encounterParticipants];
+        const temporary = updatedParticipants[participantIndex - 1];
+        updatedParticipants[participantIndex - 1] = participant;
+        updatedParticipants[participantIndex] = temporary;
+        this.setState({ encounterParticipants: updatedParticipants });
+    };
+
+    handleDownParticipantPosition = participant => {
+        const participantIndex = this.state.encounterParticipants.findIndex(
+            x => x.name === participant.name
+        );
+        if (participantIndex === this.state.encounterParticipants.length - 1) {
+            return;
+        }
+        const updatedParticipants = [...this.state.encounterParticipants];
+        const temporary = updatedParticipants[participantIndex + 1];
+        updatedParticipants[participantIndex + 1] = participant;
+        updatedParticipants[participantIndex] = temporary;
+        this.setState({ encounterParticipants: updatedParticipants });
+    };
+
     handleParticipantClick = participant => {
         this.setState({ moreInfoParticipant: participant });
     };
@@ -104,22 +154,32 @@ export default class EncounterPlayer extends PureComponent {
         );
     };
 
-    render() {
-        const orderedParticipant = this.state.encounterParticipants.sort((a, b) => {
-            if (a.initiative < b.initiative) {
-                return 1;
-            }
-            if (a.initiative > b.initiative) {
-                return -1;
-            }
-            return 0;
-        });
+    handleAddMonster = monsterInfo => {
+        const { encounterParticipants } = this.state;
 
+        const newParticipants = [
+            ...encounterParticipants,
+            {
+                name: monsterInfo.name + `- late adding`,
+                initiative: 0,
+                type: "monster",
+                info: monsterInfo,
+                hp: monsterInfo.hitPoints,
+            },
+        ];
+
+        this.setState({ encounterParticipants: newParticipants });
+    };
+
+    render() {
         return (
             <>
                 <h3>Encounter Player</h3>
+                <MonsterAdder onAddMonster={this.handleAddMonster} />
                 <div className="flex flex-row flex- wrap">
-                    <div>{orderedParticipant.map(x => this.renderParticipant(x))}</div>
+                    <div>
+                        {this.state.encounterParticipants.map(x => this.renderParticipant(x))}
+                    </div>
                     {this.renderMoreInfo()}
                 </div>
             </>
@@ -142,7 +202,9 @@ function buildEncounterParticipant(players, monstersOfEncounter) {
             const { monster: monsterInfo } = monsterDetails;
 
             const initiativeRoll = Math.floor(Math.random() * 20 + 1);
-            const initiativeBonus = modifierCalculator(monsterInfo.abilities.dexterity);
+            const initiativeBonus = modifierCalculator(
+                monsterInfo.abilities ? monsterInfo.abilities.dexterity : 0
+            );
             const initiative = initiativeRoll + initiativeBonus;
 
             previousValue.push({

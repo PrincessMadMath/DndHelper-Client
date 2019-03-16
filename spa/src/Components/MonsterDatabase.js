@@ -7,6 +7,13 @@ import { forceCheck } from "react-lazyload";
 import CrComparator from "../utils/CrComparator";
 import MonsterSelector from "./MonsterSelector";
 import queryString from "query-string";
+import styled from "styled-components";
+
+const HideOnSmall = styled.div`
+    @media screen and (max-width: 1024px) {
+        display: none;
+    }
+`;
 
 class MonsterDatabase extends React.Component {
     constructor(props) {
@@ -70,7 +77,6 @@ class MonsterDatabase extends React.Component {
         }
 
         const query = items.join();
-        console.log({ query });
 
         this.props.history.push(`/encounter?list=${query}`);
     };
@@ -85,12 +91,14 @@ class MonsterDatabase extends React.Component {
                     Monster Database - {monstersDB.length} results ({filteredMonsters.length}{" "}
                     visible)
                 </h3>
-                <MonsterSelector
-                    monsters={encounterMonsters}
-                    onAddMonster={this.handleAddMonster}
-                    onRemoveMonster={this.handleRemoveMonster}
-                    onGoToEncounter={this.handleGoToEncounter}
-                />
+                <HideOnSmall>
+                    <MonsterSelector
+                        monsters={encounterMonsters}
+                        onAddMonster={this.handleAddMonster}
+                        onRemoveMonster={this.handleRemoveMonster}
+                        onGoToEncounter={this.handleGoToEncounter}
+                    />
+                </HideOnSmall>
 
                 <div className="flex flex-wrap">
                     <SearchBox
@@ -104,6 +112,11 @@ class MonsterDatabase extends React.Component {
                         items={monstersDB.map(m => m.challengeRating)}
                         compareFunc={CrComparator}
                         callback={this.createMaskSetter("cr_mask")}
+                    />
+                    <MultiSelect
+                        fieldName="SOURCE"
+                        items={monstersDB.map(m => m.sources.map(y => y.name))}
+                        callback={this.createMaskSetter("source_mask")}
                     />
                 </div>
                 <MonsterList
