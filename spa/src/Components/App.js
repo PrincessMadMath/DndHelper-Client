@@ -36,54 +36,62 @@ Modal.setAppElement("#root");
 
 class App extends Component {
     state = {
-        monsters: monsters.map(x => ({
-            source: "official",
-            ...x
-        })),
+        monstersDB: monsters,
+        spellsDB: spells,
     };
 
     handleUploadMonster = newMonsters => {
-        const updatedMonsterse = [...this.state.monsters, ...newMonsters];
+        const updatedMonsters = [...this.state.monstersDB, ...newMonsters];
         this.setState({
-            monsters: updatedMonsterse,
+            monstersDB: updatedMonsters,
         });
     };
 
     render() {
+        const { monstersDB, spellsDB } = this.state;
+
         return (
-            <div className="App">
-                <GlobalStyle />
-                <Route path="/" component={Header} />
-                <Switch>
-                    <Route exact path="/" component={Welcome} />
-                    <Route
-                        exact
-                        path="/monsters"
-                        render={props => <MonsterDatabase monstersDB={this.state.monsters} {...props} />}
-                    />
-                    <Route
-                        path="/monsters/:monsterId"
-                        render={props => <MonsterSingle monstersDB={this.state.monsters} {...props} />}
-                    />
-                    <Route
-                        path="/encounter"
-                        render={props => <EncounterManager monstersDB={this.state.monsters} {...props} />}
-                    />
-                    <Route
-                        exact
-                        path="/spells"
-                        render={props => <SpellDatabase {...props} spellsDB={spells} />}
-                    />
-                    <Route
-                        exact
-                        path="/uploader"
-                        render={props => (
-                            <DatabaseUploader onUploadMonsters={this.handleUploadMonster} />
-                        )}
-                    />
-                    <Route component={NotFound} />
-                </Switch>
-            </div>
+            <DBContext.Provider value={{ monstersDB, spellsDB }}>
+                <div className="App">
+                    <GlobalStyle />
+                    <Route path="/" component={Header} />
+                    <Switch>
+                        <Route exact path="/" component={Welcome} />
+                        <Route
+                            exact
+                            path="/monsters"
+                            render={props => (
+                                <MonsterDatabase monstersDB={this.state.monstersDB} {...props} />
+                            )}
+                        />
+                        <Route
+                            path="/monsters/:monsterId"
+                            render={props => (
+                                <MonsterSingle monstersDB={this.state.monsters} {...props} />
+                            )}
+                        />
+                        <Route
+                            path="/encounter"
+                            render={props => (
+                                <EncounterManager monstersDB={this.state.monsters} {...props} />
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/spells"
+                            render={props => <SpellDatabase {...props} spellsDB={spells} />}
+                        />
+                        <Route
+                            exact
+                            path="/uploader"
+                            render={props => (
+                                <DatabaseUploader onUploadMonsters={this.handleUploadMonster} />
+                            )}
+                        />
+                        <Route component={NotFound} />
+                    </Switch>
+                </div>
+            </DBContext.Provider>
         );
     }
 }
