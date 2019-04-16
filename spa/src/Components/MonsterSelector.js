@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export default class MonsterSelector extends Component {
     static propTypes = {
-        monsters: PropTypes.array.isRequired,
+        monsters: PropTypes.object.isRequired,
         onAddMonster: PropTypes.func.isRequired,
         onRemoveMonster: PropTypes.func.isRequired,
         onGoToEncounter: PropTypes.func.isRequired,

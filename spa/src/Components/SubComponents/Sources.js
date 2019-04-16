@@ -6,13 +6,16 @@ const Sources = ({ sources }) => {
         return <div />;
     }
 
-    debugger;
     return (
         <div>
             <hr />
             <h3 className="mb0">Sources</h3>
             {sources.map(x => {
-                return <span>{x.name} {x.page ? `, p. ${x.page}` : ""}</span>
+                return (
+                    <span>
+                        {x.name} {x.page ? `, p. ${x.page}` : ""}
+                    </span>
+                );
             })}
         </div>
     );

@@ -40,7 +40,6 @@ export default class EncounterBuilder extends PureComponent {
         this.state = {
             monstersOfEncounter: monstersOfEncounter,
             players: players,
-            selectedMonsterOption: null,
         };
     }
 
