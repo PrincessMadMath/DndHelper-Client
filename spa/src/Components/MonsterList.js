@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import LazyLoad, { forceCheck } from "react-lazyload";
 import Monster from "./Monster";
+import SmartScroll from "./Utils/SmartScroll";
 
 import styled from "styled-components";
 
@@ -21,34 +21,26 @@ export default class MonsterList extends Component {
         visibleMonsters: PropTypes.array.isRequired,
     };
 
-    componentDidUpdate() {
-        try {
-            forceCheck();
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    render() {
+    renderMonsterItem = monster => {
         const { visibleMonsters, onAddMonster } = this.props;
 
         return (
+            <Monster monster={monster} opened={visibleMonsters.length === 1}>
+                <HideOnSmall>
+                    <AddButton>
+                        <button onClick={() => onAddMonster(monster.name)}>+</button>
+                    </AddButton>
+                </HideOnSmall>
+            </Monster>
+        );
+    };
+
+    render() {
+        const { visibleMonsters } = this.props;
+
+        return (
             <div>
-                {visibleMonsters.map(function(monster) {
-                    return (
-                        <LazyLoad key={monster.name} height={88} once={true}>
-                            <Monster monster={monster} opened={visibleMonsters.length === 1}>
-                                <HideOnSmall>
-                                    <AddButton>
-                                        <button onClick={() => onAddMonster(monster.name)}>
-                                            +
-                                        </button>
-                                    </AddButton>
-                                </HideOnSmall>
-                            </Monster>
-                        </LazyLoad>
-                    );
-                })}
+                <SmartScroll items={visibleMonsters} renderItem={this.renderMonsterItem} />
             </div>
         );
     }
