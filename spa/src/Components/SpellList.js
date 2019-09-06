@@ -1,26 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import Spell from "./Spell";
+import { Spell } from "./Spell";
 import SmartScroll from "./Utils/SmartScroll";
 
-export default class SpellList extends Component {
-    static propTypes = {
-        visibleSpells: PropTypes.array.isRequired,
-    };
+const propTypes = {
+    visibleSpells: PropTypes.array.isRequired,
+};
 
-    renderSpellItem = spell => {
-        const { visibleSpells } = this.props;
-
+export const SpellList = ({ visibleSpells }) => {
+    const renderSpellItem = spell => {
         return <Spell key={spell.name} spell={spell} opened={visibleSpells.length === 1} />;
     };
 
-    render() {
-        const { visibleSpells } = this.props;
+    return (
+        <div>
+            <SmartScroll items={visibleSpells} renderItem={renderSpellItem} />
+        </div>
+    );
+};
 
-        return (
-            <div>
-                <SmartScroll items={visibleSpells} renderItem={this.renderSpellItem} />
-            </div>
-        );
-    }
-}
+SpellList.propTypes = propTypes;

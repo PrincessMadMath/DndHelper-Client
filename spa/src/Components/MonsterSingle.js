@@ -1,23 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Monster from "./Monster";
+import { Monster } from "./Monster";
 
-class MonsterSingle extends React.Component {
-    static propTypes = {
-        monsters: PropTypes.array.isRequired
-    };
+const propTypes = {
+    monstersDB: PropTypes.array.isRequired,
+};
 
-    render() {
-        const { monstersDB } = this.props;
-        const monsterId = this.props.match.params.monsterId;
+export const MonsterSingle = ({ monstersDB, match }) => {
+    const monsterId = match.params.monsterId;
 
-        const monster = monstersDB.find(x => x.name === monsterId);
+    const monster = monstersDB.find(x => x.name === monsterId);
 
-        return (
-            <div>
-                <Monster monster={monster} />
-            </div>
-        );
-    }
-}
-export default MonsterSingle;
+    return (
+        <div>
+            <Monster monster={monster} opened />
+        </div>
+    );
+};
+
+MonsterSingle.propTypes = propTypes;

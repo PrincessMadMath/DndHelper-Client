@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const DndContainer = styled.div`
+export const DndContainer = styled.div`
     position: relative;
     border-style: solid;
     border-color: #8e2f1a;
@@ -24,7 +24,9 @@ const DndContainer = styled.div`
         opacity: 0.1;
         pointer-events: none;
     }
-     ${({ animated }) => animated && `
+    ${({ animated }) =>
+        animated &&
+        `
         &:after {
             content: "";
             position: absolute;
@@ -44,7 +46,7 @@ const DndContainer = styled.div`
             opacity: 0.4;
             pointer-events: none;
         }
-    
+
         &:hover:after {
             background-position: -190% 0%;
             transition-duration: 0.7s;
@@ -53,5 +55,3 @@ const DndContainer = styled.div`
         }
     `}
 `;
-
-export default DndContainer;

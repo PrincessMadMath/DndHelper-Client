@@ -1,9 +1,9 @@
 /* Utils */
 import React from "react";
 import Modal from "react-modal";
-import FaClose from "react-icons/lib/fa/close";
+import { MdClose } from "react-icons/md";
 
-import Spell from "../Spell";
+import { Spell } from "../Spell";
 import { DBContext } from "../App";
 
 const customStyles = {
@@ -72,7 +72,7 @@ class SpellModal extends React.Component {
                             {value => this.get_spell_component(value.spellsDB)}
                         </DBContext.Consumer>
 
-                        <FaClose
+                        <MdClose
                             size={30}
                             className="bg-white br-100 ba hover-red pointer absolute right-1 top-1"
                             onClick={this.closeModal}

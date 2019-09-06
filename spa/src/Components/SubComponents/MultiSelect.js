@@ -22,7 +22,7 @@ export default class MultiSelect extends React.Component {
     }
 
     handleChange = selectedOptions => {
-        let selectedValues = selectedOptions.map(o => o.value);
+        let selectedValues = (selectedOptions === null ? [] : selectedOptions).map(o => o.value);
 
         if (selectedValues.length === 0) {
             this.props.callback(new Array(this.props.items.length).fill(true));
