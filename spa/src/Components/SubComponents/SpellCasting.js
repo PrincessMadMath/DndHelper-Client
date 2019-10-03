@@ -1,7 +1,7 @@
 /* Utils */
 import React from "react";
 
-import SpellModal from "./SpellModal";
+import { SpellModal } from "./SpellModal";
 
 const SpellCasting = ({ title, monsterSpells }) => {
     if (monsterSpells == null) {

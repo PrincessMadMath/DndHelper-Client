@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Monster } from "./Monster";
-import SmartScroll from "./Utils/SmartScroll";
+import { SmartScroll } from "./Utils/SmartScroll";
 
 import styled from "styled-components";
 

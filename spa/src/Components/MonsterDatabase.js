@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MonsterList } from "./MonsterList";
-import SearchBox from "./SubComponents/SearchBox";
-import MultiSelect from "./SubComponents/MultiSelect";
+import { SearchBox } from "./SubComponents/SearchBox";
+import { MultiSelect } from "./SubComponents/MultiSelect";
 import MaskMap from "../utils/MaskMap";
 import CrComparator from "../utils/CrComparator";
 import { MonsterSelector } from "./MonsterSelector";

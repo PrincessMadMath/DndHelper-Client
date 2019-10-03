@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Spell } from "./Spell";
-import SmartScroll from "./Utils/SmartScroll";
+import { SmartScroll } from "./Utils/SmartScroll";
 
 const propTypes = {
     visibleSpells: PropTypes.array.isRequired,

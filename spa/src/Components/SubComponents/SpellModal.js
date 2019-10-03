@@ -1,5 +1,6 @@
 /* Utils */
-import React from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import Modal from "react-modal";
 import { MdClose } from "react-icons/md";
 
@@ -20,29 +21,24 @@ const customStyles = {
     },
 };
 
-class SpellModal extends React.Component {
-    constructor(props) {
-        super(props);
+const propTypes = {
+    name: PropTypes.string.isRequired,
+};
 
-        this.state = {
-            modalIsOpen: false,
-        };
+export const SpellModal = ({ name }) => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-    }
+    const openModal = () => {
+        setModalIsOpen(true);
+    };
 
-    openModal() {
-        this.setState({ modalIsOpen: true });
-    }
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
 
-    closeModal() {
-        this.setState({ modalIsOpen: false });
-    }
-
-    get_spell_component(spellsDB) {
+    const get_spell_component = spellsDB => {
         // Remove all non Alpha characters (we have ' and ` mismatches in our lists)
-        const lookingFor = this.props.name.replace(/\W/g, "").toLowerCase();
+        const lookingFor = name.replace(/\W/g, "").toLowerCase();
         const spellIndex = spellsDB
             .map(spell => spell.name.replace(/\W/g, "").toLowerCase())
             .findIndex(
@@ -52,36 +48,34 @@ class SpellModal extends React.Component {
             );
 
         if (spellIndex === -1) {
-            const errorMsg = "Could not find spell " + this.props.name;
+            const errorMsg = "Could not find spell " + name;
             console.error(errorMsg);
             return <span>Error: {errorMsg}</span>;
         } else {
             return <Spell spell={spellsDB[spellIndex]} opened={true} />;
         }
-    }
+    };
 
-    render() {
-        return (
-            <span>
-                <span className="underline pointer" onClick={this.openModal}>
-                    {this.props.name}
-                </span>
-                {this.state.modalIsOpen && (
-                    <Modal isOpen={true} onRequestClose={this.closeModal} style={customStyles}>
-                        <DBContext.Consumer>
-                            {value => this.get_spell_component(value.spellsDB)}
-                        </DBContext.Consumer>
-
-                        <MdClose
-                            size={30}
-                            className="bg-white br-100 ba hover-red pointer absolute right-1 top-1"
-                            onClick={this.closeModal}
-                        />
-                    </Modal>
-                )}
+    return (
+        <span>
+            <span className="underline pointer" onClick={openModal}>
+                {name}
             </span>
-        );
-    }
-}
+            {modalIsOpen && (
+                <Modal isOpen={true} onRequestClose={closeModal} style={customStyles}>
+                    <DBContext.Consumer>
+                        {value => get_spell_component(value.spellsDB)}
+                    </DBContext.Consumer>
 
-export default SpellModal;
+                    <MdClose
+                        size={30}
+                        className="bg-white br-100 ba hover-red pointer absolute right-1 top-1"
+                        onClick={closeModal}
+                    />
+                </Modal>
+            )}
+        </span>
+    );
+};
+
+SpellModal.propTypes = propTypes;

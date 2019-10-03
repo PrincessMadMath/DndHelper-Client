@@ -2,36 +2,35 @@
 import React from "react";
 import Select from "react-select";
 import Filter from "../StyledComponent/Filter";
+import PropTypes from "prop-types";
 
-export default class MultiSelect extends React.Component {
-    // Todo[kfedorov]: Add PropTypes
-    constructor(props) {
-        super(props);
+const propTypes = {
+    fieldName: PropTypes.string.isRequired,
+    items: PropTypes.array.isRequired,
+    compareFunc: PropTypes.func.isRequired,
+    callback: PropTypes.func.isRequired,
+};
 
-        let uniqueOptions = new Set(this.props.items.flat().map(v => v.trim().toLowerCase()));
-        let options;
-        if (this.props.compareFunc) {
-            options = [...uniqueOptions].sort(this.props.compareFunc);
-        } else {
-            options = [...uniqueOptions].sort();
-        }
-
-        this.state = {
-            options: options.map(o => ({ value: o, label: o })),
-        };
+export const MultiSelect = ({ items, fieldName, compareFunc, callback }) => {
+    let uniqueOptions = new Set(items.flat().map(v => v.trim().toLowerCase()));
+    let options;
+    if (compareFunc) {
+        options = [...uniqueOptions].sort(compareFunc);
+    } else {
+        options = [...uniqueOptions].sort();
     }
 
-    handleChange = selectedOptions => {
+    const handleChange = selectedOptions => {
         let selectedValues = (selectedOptions === null ? [] : selectedOptions).map(o => o.value);
 
         if (selectedValues.length === 0) {
-            this.props.callback(new Array(this.props.items.length).fill(true));
+            callback(new Array(this.props.items.length).fill(true));
         } else {
-            this.props.callback(
+            callback(
                 // Todo[kfedorov]: Maybe refactor this so its more readable
                 // This handles both the cases where the prop.sitems are of the shape [string, string, ...] ex. Spell range
                 // or [[string, string], [string], ...] ex. Spell caster class
-                this.props.items.map(f =>
+                items.map(f =>
                     [f]
                         .flat()
                         .some(f_flat =>
@@ -42,17 +41,17 @@ export default class MultiSelect extends React.Component {
         }
     };
 
-    render() {
-        return (
-            <Filter>
-                <Select
-                    className="w5"
-                    options={this.state.options}
-                    onChange={this.handleChange}
-                    isMulti={true}
-                    placeholder={" - Filter by " + this.props.fieldName + " - "}
-                />
-            </Filter>
-        );
-    }
-}
+    return (
+        <Filter>
+            <Select
+                className="w5"
+                options={options.map(o => ({ value: o, label: o }))}
+                onChange={handleChange}
+                isMulti={true}
+                placeholder={" - Filter by " + fieldName + " - "}
+            />
+        </Filter>
+    );
+};
+
+MultiSelect.propTypes = propTypes;

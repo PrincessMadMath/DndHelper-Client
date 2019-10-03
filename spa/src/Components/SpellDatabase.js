@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import SearchBox from "./SubComponents/SearchBox";
-import MultiSelect from "./SubComponents/MultiSelect";
+import { SearchBox } from "./SubComponents/SearchBox";
+import { MultiSelect } from "./SubComponents/MultiSelect";
 import MaskMap from "../utils/MaskMap";
 import queryString from "query-string";
 import { SpellList } from "./SpellList";
